@@ -1,0 +1,7 @@
+{
+  "name": "tiny-i18n",
+  "version": "0.0.0",
+  "dependencies": {
+    "isomorphic-language": "^0.0.0"
+  }
+}

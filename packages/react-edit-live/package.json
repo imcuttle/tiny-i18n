@@ -1,0 +1,12 @@
+{
+  "name": "@tiny-i18n/react-edit-live",
+  "version": "0.0.0",
+  "main": "register.js",
+  "scripts": {
+    "build": "rimraf lib/ && babel src -d lib/ -D --ignore=**/*.test.js",
+    "dev": "npm run build -- -w"
+  },
+  "dependencies": {
+
+  }
+}
