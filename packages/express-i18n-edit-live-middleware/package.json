@@ -1,0 +1,14 @@
+{
+  "name": "express-i18n-edit-live-middleware",
+  "version": "0.0.1",
+  "dependencies": {
+    "babel-core": "^6.26.0"
+  },
+  "devDependencies": {
+    "express": "^4.16.2"
+  },
+  "peerDependencies": {
+    "babel-core": "*",
+    "express": "*"
+  }
+}

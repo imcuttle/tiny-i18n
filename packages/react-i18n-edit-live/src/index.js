@@ -10,7 +10,7 @@ import { open } from './Modal/index'
 import { NULL_CHAR, unHighlightActiveBadge, highlightActiveBadge, updateDOM } from './dom-utils'
 import transaction from './transaction'
 import ModalContent from './Modal/ModalContent'
-import c from 'packages/react-edit-live/src/classnames'
+import c from 'packages/react-i18n-edit-live/src/classnames'
 
 const core = require('../easy-i18n-core')
 const { getOffset, proxy, styleUsable, createSingleElementView } = require('./utils')

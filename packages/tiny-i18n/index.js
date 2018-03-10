@@ -4,9 +4,9 @@
  * @date 2018/3/1
  * @description
  */
-var getLocalLanguage = require('isomorphic-language')
-var database = {}
-var currLanguage = getLocalLanguage()
+import getLocalLanguage from 'isomorphic-language'
+const database = {}
+let currLanguage = getLocalLanguage()
 
 function getCurrentLanguage() {
   return currLanguage
