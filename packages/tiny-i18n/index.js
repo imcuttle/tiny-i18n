@@ -16,15 +16,15 @@ export function getDictionary(language) {
   return database[language]
 }
 
-function setDictionary(language, dist) {
-  database[language] = dist
+function setDictionary(language, dict) {
+  database[language] = dict
   return database[language]
 }
 
-function extendDictionary(language, dist) {
+function extendDictionary(language, dict) {
   return setDictionary(language, {
     ...getDictionary(language),
-    ...dist
+    ...dict
   })
 }
 

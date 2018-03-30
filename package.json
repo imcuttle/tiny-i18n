@@ -10,10 +10,13 @@
     "rollup": "rimraf dist && rollup -c",
     "prepare": "run-p rollup babel",
     "commitmsg": "commitlint -e $GIT_PARAMS",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "release": "lerna publish"
   },
   "commitlint": {
-    "extends": ["@commitlint/config-conventional"]
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   },
   "keywords": [
     "imcuttle",
@@ -30,6 +33,7 @@
   "devDependencies": {
     "@commitlint/cli": "^6.1.3",
     "@commitlint/config-conventional": "^6.1.3",
+    "@types/jest": "^22.2.2",
     "babel-eslint": "^8.2.2",
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
