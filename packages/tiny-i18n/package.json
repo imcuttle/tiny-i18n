@@ -1,7 +1,20 @@
 {
   "name": "tiny-i18n",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "dependencies": {
     "isomorphic-language": "^0.0.0"
-  }
+  },
+  "description": "Tiny yet useful i18n helper.",
+  "main": "index.es5.js",
+  "scripts": {
+    "test": "jest",
+    "prepublishOnly": "babel index.js -o index.es5.js"
+  },
+  "keywords": [
+    "tiny-i18n",
+    "i18n",
+    "language"
+  ],
+  "author": "",
+  "license": "ISC"
 }
