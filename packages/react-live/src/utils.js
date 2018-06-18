@@ -7,7 +7,7 @@
 import ReactDOM from 'react-dom'
 import React from 'react'
 
-exports.styleUsable = function (style) {
+exports.styleUsable = function(style) {
   const sty = document.createElement('style')
   const head = document.head || document.getElementsByTagName('head')[0]
   sty.type = 'text/css'
@@ -42,10 +42,7 @@ function createSingleElementView() {
     },
     open(element, attributes, mountDOM = document.body) {
       const dom = getContainer(mountDOM, attributes)
-      ReactDOM.render(
-        element,
-        dom
-      )
+      ReactDOM.render(element, dom)
       return dom
     }
   }
@@ -53,7 +50,7 @@ function createSingleElementView() {
 
 exports.createSingleElementView = createSingleElementView
 
-exports.getOffset = function (el) {
+exports.getOffset = function(el) {
   el = el.getBoundingClientRect()
   return {
     left: el.left + global.scrollX,
@@ -61,24 +58,15 @@ exports.getOffset = function (el) {
   }
 }
 
-
-exports.singleView = function (attributes, mountDOM) {
+exports.singleView = function(attributes, mountDOM) {
   const center = createSingleElementView()
-  if (typeof attributes === 'function') {
-    attributes = {}
-    mountDOM = void 0
-    return core()
-  }
-
-  return core
-
   function core(Component) {
-    return class extends React.Component {
+    return class SingleView extends React.Component {
       componentDidMount() {
         center.open(this.comp, attributes, mountDOM)
       }
 
-      componentDidUpdate(oldProps) {
+      componentDidUpdate() {
         center.open(this.comp, attributes, mountDOM)
       }
 
@@ -96,19 +84,24 @@ exports.singleView = function (attributes, mountDOM) {
       }
     }
   }
+
+  if (typeof attributes === 'function') {
+    attributes = {}
+    mountDOM = void 0
+    return core()
+  }
+
+  return core
 }
 
 exports.isElementOf = Component => {
-
   // Trying to solve the problem with 'children: XXX.isRequired'
   // (https://github.com/gaearon/react-hot-loader/issues/710). This does not work for me :(
   const originalPropTypes = Component.propTypes
   Component.propTypes = undefined
 
   // Well known workaround
-  const elementType = (
-    <Component/>
-  ).type
+  const elementType = <Component />.type
 
   // Restore originalPropTypes
   Component.propTypes = originalPropTypes

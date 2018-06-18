@@ -1,0 +1,13 @@
+{
+  "name": "@tiny-i18n/react-live",
+  "version": "0.0.1",
+  "devDependencies": {
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "tiny-i18n": "^1.0.0"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "tiny-i18n": "^1.0.0"
+  }
+}

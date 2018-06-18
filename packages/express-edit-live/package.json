@@ -1,11 +1,12 @@
 {
-  "name": "express-i18n-edit-live-middleware",
+  "name": "@tiny-i18n/express-edit-live",
   "version": "0.0.1",
   "dependencies": {
     "babel-core": "^6.26.0"
   },
   "devDependencies": {
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "tiny-i18n": "^1.0.0"
   },
   "peerDependencies": {
     "babel-core": "*",
