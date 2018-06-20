@@ -11,9 +11,7 @@ import PropTypes from 'prop-types'
 import * as ti from 'tiny-i18n'
 
 export default class Provider extends React.Component {
-  static propTypes = {
-    dictionaries: PropTypes.object
-  }
+  static propTypes = {}
   static defaultProps = {}
 
   static childContextTypes = {

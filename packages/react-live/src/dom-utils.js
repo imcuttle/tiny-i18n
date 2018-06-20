@@ -5,7 +5,7 @@
  * @description:
  */
 const debug = require('debug')('@tiny-i18n/react-live')
-import { strip, toWrappedString } from './utils'
+import { rStrip, strip, toWrappedString } from './utils'
 
 export function getDOMListFromID(id) {
   return [...document.querySelectorAll(`*[data-i18n-keylist*=${JSON.stringify(JSON.stringify(id))}]`)]
@@ -34,10 +34,10 @@ export function updateDOM(el, id, oldRaw, newRaw) {
       return content
     }
 
-    return strip(
+    let striped = strip(
       content,
       (str, level, _) => {
-
+        // console.log(str, maxLev)
         debug('strip str chunk', str)
         // level = level || 1
         if (str === oldRaw) {
@@ -52,6 +52,7 @@ export function updateDOM(el, id, oldRaw, newRaw) {
       },
       maxLev
     )
+    return replace(striped, maxLev - 1)
   }
 
   list.forEach(ele => {

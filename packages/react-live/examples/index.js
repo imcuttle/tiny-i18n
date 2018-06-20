@@ -17,7 +17,8 @@ setDictionary(
   {
     hi: '你好',
     cong: '聪',
-    'say.hi': '你好呀, ${1}同学'
+    'tpl.name': '${1}同学',
+    'say.hi': '你好呀, ${1}'
   },
   'zh-CN'
 )
@@ -26,7 +27,8 @@ setDictionary(
   {
     hi: 'hi',
     cong: 'Cong',
-    'say.hi': 'Hi, ${1} .'
+    'tpl.name': 'Mr ${1}',
+    'say.hi': 'Hi, ${1}.'
   },
   'en-US'
 )
@@ -41,7 +43,9 @@ class View extends React.Component {
       <div>
         <h3>Current Language: {getCurrentLanguage()}</h3>
         {getLanguages().map(lang => (
-          <button key={lang} onClick={this.changeLanguage.bind(this, lang)}>Change Language to {lang}</button>
+          <button key={lang} onClick={this.changeLanguage.bind(this, lang)}>
+            Change Language to {lang}
+          </button>
         ))}
         <div>Im not an i18n text.</div>
         <div>{i18n('hi') + ',' + i18n('cong')}</div>
@@ -49,6 +53,12 @@ class View extends React.Component {
           {i18n('hi')},{i18n('cong', i18n('cong', 'hjhjhj'))}
         </div>
         <div title={i18n('say.hi', 'hah')}>{i18n('say.hi', i18n('cong'))}</div>
+
+        <div title={i18n('hi') + ',' + i18n('tpl.name', i18n('cong'))}>
+          {'Hover me! [translated words in title attribute] (The nested and concat case)'}
+        </div>
+        {/*TODO BUG*/
+        /*<div title={i18n('hi') + ',' + i18n('say.hi', i18n('tpl.name', i18n('cong')))}>{'Change my title attribute (The nested and concat case)'}</div>*/}
       </div>
     )
   }

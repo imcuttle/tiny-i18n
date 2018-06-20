@@ -119,19 +119,19 @@ exports.proxy = (ref, name, callback) => {
 }
 
 export const OPEN_CHAR = '\u200b'
-export const CLOSE_CHAR = '\u200b'
+export const CLOSE_CHAR = '\u200c'
 export function toWrappedString(string, level = '', repeatCount = 1) {
   return `${OPEN_CHAR.repeat(repeatCount)}${level}${string}${level}${CLOSE_CHAR.repeat(repeatCount)}`
 }
 
 function getReg(repeatCount = 1) {
-  return new RegExp(`${OPEN_CHAR.repeat(repeatCount)}(\\d?)(.+?)\\1${CLOSE_CHAR.repeat(repeatCount)}`, 'g')
+  return new RegExp(`[${OPEN_CHAR}]{${repeatCount}}(\\d?)(.+?)\\1[${CLOSE_CHAR}]{${repeatCount}}`, 'g')
 }
 
 export function getMaxLevel(string, level = '') {
   const reg = getReg()
   let maxLevel = 0
-  while(reg.test(string)) {
+  while (reg.test(string)) {
     const { $1 } = RegExp
     if (!isNaN($1)) {
       maxLevel = Math.max(maxLevel, parseInt(RegExp.$1))
@@ -140,8 +140,36 @@ export function getMaxLevel(string, level = '') {
   return maxLevel
 }
 
+function countString(content, chunk) {
+  let count = 0
+  content.replace(new RegExp(chunk, 'g'), () => {
+    count++
+  })
+  return count
+}
+
 export function strip(string = '', stripFn = (data, l, _) => _, repeatCount = 1) {
-  return string.replace(getReg(repeatCount), function(_, level, matched, lastIndex) {
+  const reg = getReg(repeatCount)
+  return string.replace(reg, function(_, level, matched, lastIndex, allString) {
+    const restString = allString.slice(lastIndex + _.length)
+    const openCount = countString(_, OPEN_CHAR)
+    const closeCount = countString(_, CLOSE_CHAR)
+    debug('openCount', openCount, _)
+    debug('closeCount', closeCount, matched)
+
+    if (openCount !== closeCount) {
+      let n = openCount - closeCount
+      let pos = 0
+      // openCount > closeCount
+      while (n > 0 && restString[pos] === CLOSE_CHAR) {
+        _ += restString[pos]
+        matched += restString[pos]
+        reg.lastIndex++
+        pos++
+        n--
+      }
+    }
+
     try {
       debug('matched', matched)
       const rlt = stripFn(matched, level, _, lastIndex)
@@ -160,10 +188,14 @@ export function rStrip(string = '', stripFn, repeatCount = 1) {
   function wrappedStripFn() {
     return stripFn.apply(this, [...arguments].concat(repeatCount))
   }
-  return strip(string, function (string) {
-    if (repeatCount - 1 > 0) {
-      arguments[0] = rStrip(string, wrappedStripFn, repeatCount - 1)
-    }
-    return wrappedStripFn.apply(this, arguments)
-  }, repeatCount)
+  return strip(
+    string,
+    function(string) {
+      if (repeatCount - 1 > 0) {
+        arguments[0] = rStrip(string, wrappedStripFn, repeatCount - 1)
+      }
+      return wrappedStripFn.apply(this, arguments)
+    },
+    repeatCount
+  )
 }
