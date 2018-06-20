@@ -1,15 +1,13 @@
-i18n,
-.i18n-badge {
+*[data-i18n-keylist] {
   transition: box-shadow ease 0.4s;
   outline: 1px #ff3d3d dotted !important;
   outline-offset: -1px;
   position: relative;
-}
-.i18n-active {
-  outline: 2px #ff3d3d solid;
-  box-shadow: 0 0 7px rgba(255, 61, 61, 0.4),
-    inset 0 0 0 1px rgba(255, 61, 61, 0.7), 0 0 0 1px rgba(255, 61, 61, 0.7);
-  outline-color: transparent;
+  &.i18n-active {
+    outline: 2px #ff3d3d solid;
+    box-shadow: 0 0 7px rgba(255, 61, 61, 0.4), inset 0 0 0 1px rgba(255, 61, 61, 0.7), 0 0 0 1px rgba(255, 61, 61, 0.7);
+    outline-color: transparent;
+  }
 }
 .i18n-badge-inner {
   position: absolute;
@@ -165,6 +163,9 @@ i18n,
 }
 
 .i18n-modal-container {
+  textarea {
+    font-size: 14px;
+  }
 }
 .i18n-modal-sep {
   margin-left: -20px;
@@ -193,6 +194,7 @@ i18n,
 }
 .i18n-modal-header-btn {
   cursor: pointer;
+  line-height: 37px;
   display: block;
   height: 100%;
   text-align: center;

@@ -6,17 +6,25 @@
  */
 import React from 'react'
 import { close, Header, Body, Footer, Sep } from './index'
+import { getLanguages, getCurrentLanguage } from 'tiny-i18n'
 import transaction from '../transaction'
 
 const bodyPrefix = 'i18n-modal-body-'
 export default class ModalContent extends React.Component {
   state = {
-    value: this.props.value,
+    keyList: this.props.keyList,
+    argsList: this.props.argsList,
+    translatedList: this.props.translatedList,
+    inputValueList: this.props.inputValueList || this.props.translatedList,
     index: this.props.index,
     fetching: false
   }
 
   static defaultProps = {
+    keyList: [],
+    argsList: [],
+    translatedList: [],
+    // inputValueList: [],
     index: 0,
     updateValue: () => {},
     onActiveUpdate: () => {}
@@ -35,18 +43,22 @@ export default class ModalContent extends React.Component {
 
   handleUpdateLang = async lang => {
     const list = this.idList
-    const id = list[this.state.index]
+    const { index, inputValueList } = this.state
+    const id = list[index]
     const str = await transaction.getLangInfo({ id })
     if (typeof str === 'string' && str) {
-      const newValue = this.state.value.slice()
-      newValue[this.state.index] = str
+      const newValue = inputValueList.slice()
+      newValue[index] = str
+      // TODO  set translated word
       this.setState({
-        value: newValue
+        inputValueList: newValue
       })
     }
   }
 
   componentDidMount() {
+    transaction.register(this.lang)
+
     this.handleUpdateLang(this.lang)
     transaction.addListener('update:lang', this.handleUpdateLang)
     const list = this.idList
@@ -57,50 +69,34 @@ export default class ModalContent extends React.Component {
   }
   componentDidUpdate(oldProps, oldState) {
     const list = this.idList
-    if (list[this.state.index] !== oldProps.id[oldState.index]) {
+    if (list[this.state.index] !== oldProps.keyList[oldState.index]) {
       this.handleUpdateLang(this.lang)
       this.props.onActiveUpdate(
         list[this.state.index],
-        oldProps.id[oldState.index]
+        oldProps.keyList[oldState.index]
       )
     }
   }
 
-  get srcList() {
-    if (Array.isArray(this.props.id)) {
-      return this.props.source
-    }
-    return [this.props.source]
-  }
   get argsList() {
-    if (Array.isArray(this.props.id)) {
-      return this.props.args
-    }
-    return [this.props.args]
+    return this.state.argsList
   }
   get idList() {
-    if (Array.isArray(this.props.id)) {
-      return this.props.id
-    }
-    return [this.props.id]
+    return this.state.keyList
   }
   get rawList() {
-    if (Array.isArray(this.props.id)) {
-      return this.props.raw
-    }
-    return [this.props.raw]
+    return this.state.translatedList
   }
 
   onSave = async evt => {
     if (this.props.onSave) {
-      const { value, index } = this.state
+      const { inputValueList, index } = this.state
       const data = {
-        value: value[index],
+        value: inputValueList[index],
         data: {
           id: this.idList[index],
           args: this.argsList[index],
-          raw: this.argsList[index],
-          src: this.srcList[index]
+          raw: this.rawList[index]
         }
       }
       this.setState({ fetching: true })
@@ -113,7 +109,7 @@ export default class ModalContent extends React.Component {
   }
 
   get lang() {
-    return transaction.context.lang.replace(/_/g, '-')
+    return transaction.context.lang || getCurrentLanguage()
   }
 
   close = () => {
@@ -122,7 +118,7 @@ export default class ModalContent extends React.Component {
   }
 
   render() {
-    const { index, value } = this.state
+    const { index, inputValueList } = this.state
     const { idList, argsList, rawList } = this
 
     return (
@@ -130,26 +126,22 @@ export default class ModalContent extends React.Component {
         <Header onClose={this.close}>i18n Edit Live</Header>
         <Body>
           <div className="i18n-lang-context">
-            <button
-              disabled={this.lang === 'en-US'}
-              className="i18n-modal-btn sm"
-              onClick={() => {
-                transaction.register('en-US')
-                this.forceUpdate()
-              }}
-            >
-              en-US
-            </button>
-            <button
-              className="i18n-modal-btn sm"
-              disabled={this.lang === 'zh-CN'}
-              onClick={() => {
-                transaction.register('zh-CN')
-                this.forceUpdate()
-              }}
-            >
-              zh-CN
-            </button>
+            {
+              getLanguages().map(lang => {
+                return <button
+                  key={lang}
+                  disabled={this.lang === lang}
+                  className="i18n-modal-btn sm"
+                  onClick={() => {
+                    transaction.register(lang)
+                    this.handleUpdateLang(this.lang)
+                    this.forceUpdate()
+                  }}
+                >
+                  {lang}
+                </button>
+              })
+            }
           </div>
           <div className={bodyPrefix + 'info'}>
             <div className={bodyPrefix + 'logo'}>i18n Edit Live</div>
@@ -158,12 +150,6 @@ export default class ModalContent extends React.Component {
               <span>Key: </span>
               <span>{idList[index]}</span>
             </div>
-            {this.srcList[index] && (
-              <div className={bodyPrefix + 'key'}>
-                <span>Src: </span>
-                <span>{this.srcList[index]}</span>
-              </div>
-            )}
             {argsList[index] &&
               !!argsList[index].length && (
                 <div className={bodyPrefix + 'key'}>
@@ -175,7 +161,7 @@ export default class ModalContent extends React.Component {
           <Sep />
           <textarea
             autoFocus={true}
-            value={value[index]}
+            value={inputValueList[index]}
             onKeyDown={async evt => {
               // Ctrl/Cmd + S
               if (
@@ -196,9 +182,9 @@ export default class ModalContent extends React.Component {
               }
             }}
             onChange={evt => {
-              const newValues = value.slice()
+              const newValues = inputValueList.slice()
               newValues[index] = evt.target.value
-              this.setState({ value: newValues })
+              this.setState({ inputValueList: newValues })
               this.props.updateValue && this.props.updateValue(newValues)
             }}
             rows={4}
@@ -238,8 +224,8 @@ export default class ModalContent extends React.Component {
             <button
               disabled={
                 this.state.fetching ||
-                !value[index] ||
-                value[index] === rawList[index]
+                !inputValueList[index] ||
+                inputValueList[index] === rawList[index]
               }
               className={'i18n-modal-btn'}
               onClick={this.onSave}

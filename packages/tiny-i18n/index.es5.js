@@ -11,6 +11,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 
 exports.getDictionary = getDictionary;
+exports.getWord = getWord;
 
 var _isomorphicLanguage = require('isomorphic-language');
 
@@ -21,21 +22,45 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var database = {};
 var currLanguage = (0, _isomorphicLanguage2.default)();
 
+function assertDictionary(language) {
+  if (!getDictionary(language)) {
+    throw new Error('[tiny-i18n] Error: the dictionary of language: ' + currentLang + ' is not existed.');
+  }
+}
+
 function getCurrentLanguage() {
   return currLanguage;
 }
 
-function getDictionary(language) {
+function getLanguages() {
+  return Object.keys(database);
+}
+
+function getDictionary() {
+  var language = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : getCurrentLanguage();
+
   return database[language];
 }
 
-function setDictionary(language, dict) {
+function getWord(key) {
+  var language = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : getCurrentLanguage();
+
+  assertDictionary(language);
+  var dictionary = getDictionary(language);
+  return dictionary[key];
+}
+
+function setDictionary(dict) {
+  var language = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : getCurrentLanguage();
+
   database[language] = dict;
   return database[language];
 }
 
-function extendDictionary(language, dict) {
-  return setDictionary(language, _extends({}, getDictionary(language), dict));
+function extendDictionary(dict) {
+  var language = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : getCurrentLanguage();
+
+  return setDictionary(_extends({}, getDictionary(language), dict), language);
 }
 
 function setLanguage(language) {
@@ -47,12 +72,9 @@ function i18n(key) {
     args[_key - 1] = arguments[_key];
   }
 
-  var currentLang = getCurrentLanguage();
-  var dict = database[currentLang];
-  if (!dict) {
-    throw new Error('[tiny-i18n] Error: the dictionary of language: ' + currentLang + ' is empty.');
-  }
-  var value = dict[key];
+  var current = getCurrentLanguage();
+  assertDictionary(current);
+  var value = getWord(key, current);
   if (typeof value !== 'string') {
     return '{{' + key + '}}';
   }
@@ -67,5 +89,7 @@ module.exports = {
   setLanguage: setLanguage,
   getCurrentLanguage: getCurrentLanguage,
   getDictionary: getDictionary,
+  getLanguages: getLanguages,
+  getWord: getWord,
   extendDictionary: extendDictionary
 };

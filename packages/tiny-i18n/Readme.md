@@ -5,14 +5,14 @@ Tiny yet useful i18n helper.
 ## API
 
 ### setDictionary 
-`(lang: string, dict: object) => object`   
+`(dict: object, lang: string = getCurrentLanguage()) => object`   
 
 ### extendDictionary 
-`(lang: string, dict: object) => object`  
+`(dict: object, lang: string = getCurrentLanguage()) => object`  
 
 ### setLanguage(lang: string)
 
-### getDictionary: (lang: string) => object
+### getDictionary: (lang: string = getCurrentLanguage()) => object
 ### getCurrentLanguage: () => string
 **Note: tiny-i18n use [isomorphic-language](https://www.npmjs.com/package/isomorphic-language) to set current language at first time**
 
@@ -28,16 +28,16 @@ const {
   setLanguage
 } = require('tiny-i18n')
 
-setDictionary('zh', {
+setDictionary({
   a: '啊',
   b: '吧',
   c: '你好${1}'
-})
-setDictionary('en', {
+}, 'zh')
+setDictionary({
   a: 'a',
   b: 'b',
   c: 'c${1}'
-})
+}, 'en')
 
 expect(getDictionary('zh')).toEqual({
   a: '啊',

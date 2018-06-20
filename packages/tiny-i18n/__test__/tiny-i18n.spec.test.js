@@ -17,16 +17,16 @@ import {
 
 describe('tiny-i18n.spec', function () {
   beforeAll(function () {
-    setDictionary('zh', {
+    setDictionary({
       a: '啊',
       b: '吧',
       c: '你好${1}'
-    })
-    setDictionary('en', {
+    }, 'zh')
+    setDictionary({
       a: 'a',
       b: 'b',
       c: 'c${1}'
-    })
+    }, 'en')
   })
   test('should getDictionary works', () => {
     expect(getDictionary('zh')).toEqual({

@@ -8,24 +8,40 @@ import getLocalLanguage from 'isomorphic-language'
 const database = {}
 let currLanguage = getLocalLanguage()
 
+function assertDictionary(language) {
+  if (!getDictionary(language)) {
+    throw new Error(`[tiny-i18n] Error: the dictionary of language: ${currentLang} is not existed.`)
+  }
+}
+
 function getCurrentLanguage() {
   return currLanguage
 }
 
-export function getDictionary(language) {
+function getLanguages() {
+  return Object.keys(database)
+}
+
+export function getDictionary(language = getCurrentLanguage()) {
   return database[language]
 }
 
-function setDictionary(language, dict) {
+export function getWord(key, language = getCurrentLanguage()) {
+  assertDictionary(language)
+  const dictionary = getDictionary(language)
+  return dictionary[key]
+}
+
+function setDictionary(dict, language = getCurrentLanguage()) {
   database[language] = dict
   return database[language]
 }
 
-function extendDictionary(language, dict) {
-  return setDictionary(language, {
+function extendDictionary(dict, language = getCurrentLanguage()) {
+  return setDictionary({
     ...getDictionary(language),
     ...dict
-  })
+  }, language)
 }
 
 function setLanguage(language) {
@@ -33,12 +49,9 @@ function setLanguage(language) {
 }
 
 function i18n(key, ...args) {
-  const currentLang = getCurrentLanguage()
-  const dict = database[currentLang]
-  if (!dict) {
-    throw new Error(`[tiny-i18n] Error: the dictionary of language: ${currentLang} is empty.`)
-  }
-  let value = dict[key]
+  const current = getCurrentLanguage()
+  assertDictionary(current)
+  const value = getWord(key, current)
   if (typeof value !== 'string') {
     return `{{${key}}}`
   }
@@ -48,10 +61,12 @@ function i18n(key, ...args) {
 }
 
 module.exports = {
-  i18n: i18n,
-  setDictionary: setDictionary,
-  setLanguage: setLanguage,
-  getCurrentLanguage: getCurrentLanguage,
-  getDictionary: getDictionary,
-  extendDictionary: extendDictionary
+  i18n,
+  setDictionary,
+  setLanguage,
+  getCurrentLanguage,
+  getDictionary,
+  getLanguages,
+  getWord,
+  extendDictionary
 }

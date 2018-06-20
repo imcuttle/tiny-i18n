@@ -6,6 +6,7 @@
  */
 import ReactDOM from 'react-dom'
 import React from 'react'
+const debug = require('debug')('@tiny-i18n/react-live')
 
 exports.styleUsable = function(style) {
   const sty = document.createElement('style')
@@ -115,4 +116,54 @@ exports.proxy = (ref, name, callback) => {
       ref[name] = callback.call(ref, ref[name])
     }
   }
+}
+
+export const OPEN_CHAR = '\u200b'
+export const CLOSE_CHAR = '\u200b'
+export function toWrappedString(string, level = '', repeatCount = 1) {
+  return `${OPEN_CHAR.repeat(repeatCount)}${level}${string}${level}${CLOSE_CHAR.repeat(repeatCount)}`
+}
+
+function getReg(repeatCount = 1) {
+  return new RegExp(`${OPEN_CHAR.repeat(repeatCount)}(\\d?)(.+?)\\1${CLOSE_CHAR.repeat(repeatCount)}`, 'g')
+}
+
+export function getMaxLevel(string, level = '') {
+  const reg = getReg()
+  let maxLevel = 0
+  while(reg.test(string)) {
+    const { $1 } = RegExp
+    if (!isNaN($1)) {
+      maxLevel = Math.max(maxLevel, parseInt(RegExp.$1))
+    }
+  }
+  return maxLevel
+}
+
+export function strip(string = '', stripFn = (data, l, _) => _, repeatCount = 1) {
+  return string.replace(getReg(repeatCount), function(_, level, matched, lastIndex) {
+    try {
+      debug('matched', matched)
+      const rlt = stripFn(matched, level, _, lastIndex)
+      debug('return string %s.', rlt)
+      return rlt
+    } catch (e) {
+      return _
+    }
+  })
+}
+
+export function rStrip(string = '', stripFn, repeatCount = 1) {
+  if (repeatCount <= 0) {
+    return string
+  }
+  function wrappedStripFn() {
+    return stripFn.apply(this, [...arguments].concat(repeatCount))
+  }
+  return strip(string, function (string) {
+    if (repeatCount - 1 > 0) {
+      arguments[0] = rStrip(string, wrappedStripFn, repeatCount - 1)
+    }
+    return wrappedStripFn.apply(this, arguments)
+  }, repeatCount)
 }

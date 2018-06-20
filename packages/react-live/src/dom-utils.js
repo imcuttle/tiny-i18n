@@ -4,10 +4,11 @@
  * @date: 2017/12/20
  * @description:
  */
-export const NULL_CHAR = '\u200C'
+const debug = require('debug')('@tiny-i18n/react-live')
+import { strip, toWrappedString } from './utils'
 
 export function getDOMListFromID(id) {
-  return [...document.querySelectorAll(`*[data-i18n-id*=${JSON.stringify(JSON.stringify(id))}]`)]
+  return [...document.querySelectorAll(`*[data-i18n-keylist*=${JSON.stringify(JSON.stringify(id))}]`)]
 }
 
 export function highlightActiveBadge(id) {
@@ -18,7 +19,7 @@ export function highlightActiveBadge(id) {
 }
 
 export function unHighlightActiveBadge() {
-  const list = [...document.querySelectorAll('.i18n-active.i18n-badge')]
+  const list = [...document.querySelectorAll('*[data-i18n-keylist].i18n-active')]
   list.forEach(ele => {
     ele.classList.remove('i18n-active')
   })
@@ -26,43 +27,53 @@ export function unHighlightActiveBadge() {
 
 export function updateDOM(el, id, oldRaw, newRaw) {
   const list = getDOMListFromID(id)
-  list.forEach(ele => {
-    let path = ele.getAttribute('data-i18n-path') || '[]'
-    try {
-      path = JSON.parse(path)
-    } catch (e) {
-      path = []
+  debug('updateDOM list: %o', list)
+
+  function replace(content, maxLev) {
+    if (maxLev < 1) {
+      return content
     }
 
-    path.forEach(p => {
-      if (p === 'children') {
-        // 对应单一child的情况
-        if (ele.textContent === oldRaw) {
-          ele.textContent = newRaw
-        }
-        else {
-          // 包含的问题？
-          // 1. 复制带有不可见字符
-          // 2. _i('tpl', _i('abc')) 的更新问题
-          //  `${NULL_CHAR} tpl of ${NULL_CHAR}abc{NULL_CHAR} abc ${NULL_CHAR}`
+    return strip(
+      content,
+      (str, level, _) => {
 
-          // @todo 考虑改成记录 字符串索引位置（不用不可见字符）？
-          ele.textContent = ele.textContent.replace(
-            new RegExp(NULL_CHAR + '(.*?)' + NULL_CHAR, 'g'),
-            (_, $1) => {
-              if ($1 === oldRaw) {
-                $1 = newRaw
-              }
-              return NULL_CHAR + $1 + NULL_CHAR
-            }
-          )
+        debug('strip str chunk', str)
+        // level = level || 1
+        if (str === oldRaw) {
+          return toWrappedString(newRaw, void 0, maxLev)
         }
-      }
-      else {
-        if (ele.getAttribute(p) === oldRaw) {
-          ele.setAttribute(p, newRaw)
+
+        if (maxLev > 1) {
+          return toWrappedString(replace(str, maxLev - 1), void 0, maxLev)
         }
-      }
-    })
+
+        return _
+      },
+      maxLev
+    )
+  }
+
+  list.forEach(ele => {
+    let pathmap = ele.getAttribute('data-i18n-pathmap') || '{}'
+    try {
+      pathmap = JSON.parse(pathmap)
+    } catch (e) {
+      pathmap = {}
+    }
+
+    const paths = pathmap[id]
+    if (paths) {
+      paths.forEach(([p, maxLev]) => {
+        if (/^children\[(\d+)]$/.test(p)) {
+          const index = parseInt(RegExp.$1)
+          const node = ele.childNodes[index]
+
+          node.textContent = replace(node.textContent, maxLev)
+        } else {
+          ele.setAttribute(p, replace(ele.getAttribute(p), maxLev))
+        }
+      })
+    }
   })
 }

@@ -6,11 +6,12 @@
  */
 
 import EventEmitter from 'events'
+import { getWord } from 'tiny-i18n'
 
 class MyEventEmitter extends EventEmitter {
   context = { data: { reqs: [] } }
   config = {}
-  auth = false
+  auth = true
 
   setConfig(config = {}) {
     this.config = config
@@ -39,7 +40,7 @@ class MyEventEmitter extends EventEmitter {
       }
       return null
     }
-    return null
+    return getWord(extra.id, this.context.lang)
   }
 
   async authorization() {
