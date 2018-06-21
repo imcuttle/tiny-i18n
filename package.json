@@ -8,6 +8,7 @@
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md",
     "commitmsg": "commitlint -e $GIT_PARAMS",
     "precommit": "lint-staged",
+    "bootstrap": "lerna bootstrap",
     "release": "lerna publish",
     "example": "lerna run --parallel example",
     "dev": "lerna run --parallel dev",
