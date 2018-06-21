@@ -6,13 +6,20 @@
  */
 
 import EventEmitter from 'events'
-import { getWord } from 'tiny-i18n'
+
+const tinyI18n = require('tiny-i18n')
+const { getWord } = tinyI18n
 
 class MyEventEmitter extends EventEmitter {
   context = { data: { reqs: [] } }
   config = {}
-  auth = true
 
+  /**
+   *
+   * @param config
+   * @param config.fetchWord
+   * @param config.fetchUpdate
+   */
   setConfig(config = {}) {
     this.config = config
   }
@@ -25,10 +32,11 @@ class MyEventEmitter extends EventEmitter {
   }
 
   async getLangInfo(extra) {
-    if (this.config.fetchLangInfo) {
+    if (this.config.fetchWord) {
       try {
-        const req = { lang: this.context.lang, ...extra }
-        const data = await this.config.fetchLangInfo(req)
+        const req = { lang: this.context.lang, key: extra.id, ...extra }
+        delete req.id
+        const data = await this.config.fetchWord(req)
         if (data === false) {
           return null
         }
@@ -43,25 +51,8 @@ class MyEventEmitter extends EventEmitter {
     return getWord(extra.id, this.context.lang)
   }
 
-  async authorization() {
-    if (this.config.fetchAuth) {
-      try {
-        const data = await this.config.fetchAuth(this.context.lang)
-        this.emit('auth', data)
-        this.auth = true
-      } catch (err) {
-        this.auth = false
-        err.id = 'auth'
-        this.emit('error', err)
-      }
-    } else {
-      this.auth = true
-    }
-  }
-
-  async update({ id, value, lang = this.context.lang, source }) {
-    this.checkAuth()
-    const req = { id, value, lang, source }
+  async update({ id, value, lang = this.context.lang }) {
+    const req = { key: id, value, lang }
     if (this.config.fetchUpdate) {
       try {
         const data = await this.config.fetchUpdate(req)
@@ -77,30 +68,21 @@ class MyEventEmitter extends EventEmitter {
     return true
   }
 
-  async push() {
-    this.checkAuth()
-    if (this.config.fetchPush) {
-      try {
-        if (this.context.data.reqs.length) {
-          const data = await this.config.fetchPush(this.context.data.reqs)
-          this.emit('push', data)
-          this.context.data.reqs = []
-        }
-      } catch (err) {
-        err.id = 'push'
-        this.emit('error', err)
-      }
-    }
-  }
+  // async push() {
+  //   if (this.config.fetchPush) {
+  //     try {
+  //       if (this.context.data.reqs.length) {
+  //         const data = await this.config.fetchPush(this.context.data.reqs)
+  //         this.emit('push', data)
+  //         this.context.data.reqs = []
+  //       }
+  //     } catch (err) {
+  //       err.id = 'push'
+  //       this.emit('error', err)
+  //     }
+  //   }
+  // }
 
-  checkAuth() {
-    if (!this.auth) {
-      const err = new Error('no auth')
-      err.id = 'no-auth'
-      this.emit('error', err)
-      throw err
-    }
-  }
 }
 
 const main = new MyEventEmitter()

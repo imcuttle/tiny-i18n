@@ -8,7 +8,7 @@ const debug = require('debug')('@tiny-i18n/react-live')
 import { rStrip, strip, toWrappedString } from './utils'
 
 export function getDOMListFromID(id) {
-  return [...document.querySelectorAll(`*[data-i18n-keylist*=${JSON.stringify(JSON.stringify(id))}]`)]
+  return [].slice.call(document.querySelectorAll(`*[data-i18n-keylist*=${JSON.stringify(JSON.stringify(id))}]`))
 }
 
 export function highlightActiveBadge(id) {
@@ -19,7 +19,7 @@ export function highlightActiveBadge(id) {
 }
 
 export function unHighlightActiveBadge() {
-  const list = [...document.querySelectorAll('*[data-i18n-keylist].i18n-active')]
+  const list = [].slice.call(document.querySelectorAll('*[data-i18n-keylist].i18n-active'))
   list.forEach(ele => {
     ele.classList.remove('i18n-active')
   })
@@ -52,6 +52,8 @@ export function updateDOM(el, id, oldRaw, newRaw) {
       },
       maxLev
     )
+
+    // i18n('a') + i18n('tpl', i18n('a'))
     return replace(striped, maxLev - 1)
   }
 

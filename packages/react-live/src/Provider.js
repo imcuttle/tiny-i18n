@@ -8,7 +8,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import * as ti from 'tiny-i18n'
+const ti = require('tiny-i18n')
 
 export default class Provider extends React.Component {
   static propTypes = {}
@@ -19,12 +19,15 @@ export default class Provider extends React.Component {
   }
 
   /**
-   * Wrap each functions for update children components
+   * Wraps each function for update children components
    */
-  wrapFunction(func) {
+  wrapFunction(getter) {
+    let func = getter()
     const self = this
     if (typeof func === 'function') {
       return function() {
+        // Cancelled: Use getter for syncing i18n.setLanguage
+        // func = getter()
         const rlt = func.apply(this, arguments)
         self.forceUpdate()
         return rlt
@@ -36,8 +39,7 @@ export default class Provider extends React.Component {
   getChildContext() {
     const context = {}
     Object.keys(ti).forEach(key => {
-      const func = ti[key]
-      context[key] = this.wrapFunction(func)
+      context[key] = this.wrapFunction(() => ti[key])
     })
 
     return {

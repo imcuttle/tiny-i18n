@@ -18,7 +18,7 @@ export default function inject(component) {
     (component.displayName || component.name || (component.constructor && component.constructor.name) || 'Unknown')
 
   if (isStateless(component)) {
-    console.error(
+    process.env.NODE_ENV !== 'production' && console.error(
       '[tiny-i18n (react-live)] Error: `' +
         displayName +
         '` is an stateless Component. but `inject` requires an react class component.'

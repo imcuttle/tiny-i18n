@@ -1,8 +1,9 @@
 {
-  "name": "@tiny-i18n/express-edit-live",
-  "version": "0.0.1",
+  "name": "@tiny-i18n/fs",
+  "version": "1.0.0",
   "dependencies": {
-    "babel-core": "^6.26.0"
+    "babel-core": "^6.26.0",
+    "pify": "^3.0.0"
   },
   "devDependencies": {
     "express": "^4.16.2",

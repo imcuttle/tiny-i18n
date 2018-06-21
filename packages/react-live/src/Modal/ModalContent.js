@@ -6,9 +6,11 @@
  */
 import React from 'react'
 import { i18n, wrapped_unhighlight_createElement } from '../'
-import { getWord, setLanguage, getLanguages, getCurrentLanguage } from 'tiny-i18n'
 import { close, Header, Body, Footer, Sep } from './index'
 import transaction from '../transaction'
+
+const tinyI18n = require('tiny-i18n')
+const { getWord, setLanguage, getLanguages, getCurrentLanguage } = tinyI18n
 
 const bodyPrefix = 'i18n-modal-body-'
 export default class ModalContent extends React.Component {
@@ -54,7 +56,6 @@ export default class ModalContent extends React.Component {
     if (typeof str === 'string' && str) {
       const newValue = inputValueList.slice()
       newValue[index] = str
-      // TODO  set translated word
       this.setState({
         inputValueList: newValue
       })
@@ -140,7 +141,7 @@ export default class ModalContent extends React.Component {
                   className="i18n-modal-btn sm"
                   onClick={() => {
                     transaction.register(lang)
-                    this.handleUpdateLang(this.lang)
+                    this.handleUpdateLang(lang)
                     this.forceUpdate()
                   }}
                 >

@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`I18nFS should thrown error 1`] = `"[tiny-i18n fs] The language: zhxx-CN is not found."`;

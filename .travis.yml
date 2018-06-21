@@ -1,8 +1,11 @@
 sudo: false
 language: node_js
+os:
+  - linux
+  - osx
 node_js:
-  - 6
-  - 7
+#  - 6
+#  - 7
   - 8
   - stable
 
@@ -13,10 +16,23 @@ cache:
 
 install:
   - npm install
+  - npm run bootstrap
 
-before_script:
-  - npm install codecov
-script:
-  - npm test -- --coverage
-after_script:
-  - codecov --token=$CODECOV_TOKEN
+jobs:
+  include:
+    - stage: Document deploy
+      allow_failure: true
+      script: cd packages/react-live && npm run build
+      deploy:
+        edge:
+          branch: v1.8.47
+        provider: pages
+        skip_cleanup: true
+        github_token: ${GH_TOKEN} # Set in travis-ci.org dashboard
+        local_dir: packages/react-live/.dist
+
+    - stage: Unit testing
+      before_script: npm install codecov
+      script: npm test -- --coverage
+      after_script: codecov --token=$CODECOV_TOKEN
+

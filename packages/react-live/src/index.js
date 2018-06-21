@@ -5,20 +5,19 @@
  * @description
  */
 
-import * as tinyI18n from 'tiny-i18n'
 import * as React from 'react'
 import { BadgeInner } from './Badge'
 import { highlightActiveBadge, unHighlightActiveBadge, updateDOM } from './dom-utils'
 import { open } from './Modal/index'
 import ModalContent from './Modal/ModalContent'
+import { getMaxLevel, rStrip, proxy, getOffset, toWrappedString, createSingleElementView, strip } from './utils'
 import transaction from './transaction'
 
-import { getMaxLevel, rStrip, proxy, getOffset, toWrappedString, createSingleElementView, strip } from './utils'
+const tinyI18n = require('tiny-i18n')
 
 export { default as Provider } from './Provider'
-export { default as transaction } from './transaction'
 export { default as inject } from './inject-i18n'
-// export transaction;
+export { default as transaction } from './transaction'
 
 const { createElement: pureCreateElement } = React
 const { i18n: pureI18n, getWord, setLanguage, extendDictionary, getCurrentLanguage, getDictionary } = tinyI18n
@@ -207,6 +206,7 @@ function makeWrappedCreateElement(highlight) {
                   }
 
                   ctx.content.forceUpdate()
+                  transaction.emit('afterUpdate', { lang: ctx.content.lang, ...data })
                 }
               }}
             />

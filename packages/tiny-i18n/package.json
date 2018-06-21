@@ -4,6 +4,9 @@
   "dependencies": {
     "isomorphic-language": "^0.0.0"
   },
+  "files": [
+    "index.es5.js"
+  ],
   "description": "Tiny yet useful i18n helper.",
   "main": "index.es5.js",
   "scripts": {

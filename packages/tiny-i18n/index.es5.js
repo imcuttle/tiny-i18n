@@ -24,7 +24,7 @@ var currLanguage = (0, _isomorphicLanguage2.default)();
 
 function assertDictionary(language) {
   if (!getDictionary(language)) {
-    throw new Error('[tiny-i18n] Error: the dictionary of language: ' + currentLang + ' is not existed.');
+    throw new Error('[tiny-i18n] Error: the dictionary of language: ' + language + ' is not existed.');
   }
 }
 
@@ -76,6 +76,7 @@ function i18n(key) {
   assertDictionary(current);
   var value = getWord(key, current);
   if (typeof value !== 'string') {
+    process.env.NODE_ENV !== 'production' && console.error('[tiny-i18n] Error: the `' + key + '` word is not found in ' + current + ' language.');
     return '{{' + key + '}}';
   }
   return value.replace(/\${(\d+)}/g, function (_, $1) {

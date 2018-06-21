@@ -1,9 +1,21 @@
 {
   "name": "@tiny-i18n/react-live",
-  "version": "0.0.1",
-  "main": "src/index.js",
+  "version": "1.0.0",
+  "main": "lib/index.js",
+  "scripts": {
+    "example": "npx run-p -l server gojs",
+    "server": "cd examples && node server.js",
+    "gojs": "gojs -i examples/spa.js -p 10000",
+    "build": "gojs -b examples/index.js",
+    "prepublishOnly": "babel src/ -D -d lib",
+    "dev": "npm run prepublishOnly -- -w"
+  },
   "devDependencies": {
+    "@tiny-i18n/express-live": "^1.0.0",
+    "express": "^4.16.3",
     "go-js": "^1.3.12",
+    "less": "^3.0.4",
+    "npm-run-all": "^4.1.3",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "tiny-i18n": "^1.0.0"
