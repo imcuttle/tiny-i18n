@@ -31,7 +31,5 @@
   "bugs": {
     "url": "https://github.com/imcuttle/tiny-i18n/issues"
   },
-  "homepage": "https://github.com/imcuttle/tiny-i18n#readme",
-  "devDependencies": {
-  }
+  "homepage": "https://github.com/imcuttle/tiny-i18n#readme"
 }
