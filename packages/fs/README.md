@@ -41,4 +41,4 @@ Updates value of matched key.
 
 ## Related
 - [@tiny-i18n/express-live](../express-live) - The express router about tiny-i18n's edit live
-- [react-live](../react-live) - The magical effect making tiny-i18n could be used easily and edit live in react
+- [@tiny-i18n/react-live](../react-live) - The magical effect making tiny-i18n could be used easily and edit live in react
