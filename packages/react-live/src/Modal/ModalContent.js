@@ -65,7 +65,7 @@ export default class ModalContent extends React.Component {
   componentDidMount() {
     transaction.register(this.lang)
 
-    this.handleUpdateLang(this.lang)
+    // this.handleUpdateLang(this.lang)
     transaction.addListener('update:lang', this.handleUpdateLang)
     const list = this.idList
     this.props.onActiveUpdate(list[this.state.index], null)
@@ -141,7 +141,7 @@ export default class ModalContent extends React.Component {
                   className="i18n-modal-btn sm"
                   onClick={() => {
                     transaction.register(lang)
-                    this.handleUpdateLang(lang)
+                    // this.handleUpdateLang(lang)
                     this.forceUpdate()
                   }}
                 >

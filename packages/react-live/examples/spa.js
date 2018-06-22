@@ -5,13 +5,14 @@
  * @description
  */
 import '../register'
+import '../lib/style.less'
+
 import { transaction } from '../'
 import { setDictionary, getLanguages, getCurrentLanguage, i18n, getDictionary } from 'tiny-i18n'
 import { Provider, inject } from '../'
 
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import '../lib/style.less'
 
 let zhDict = require('./dict/zh-CN')
 let enDict = require('./dict/en-US')

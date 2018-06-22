@@ -8,5 +8,5 @@ module.exports = {
   hi: 'hi',
   cong: 'Cong',
   'tpl.name': 'Mr ${1}',
-  'say.hi': 'Hi, ${1}.'
-}
+  'say.hi': 'Hi, ${1}.ww '
+};

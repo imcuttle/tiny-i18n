@@ -8,8 +8,8 @@
     "gojs": "gojs -i examples/spa.js -p 10000",
     "build": "gojs -b examples/index.js",
     "build:css": "lessc lib/style.less lib/style.css",
-    "prepare": "babel src/ -D -d lib && npm run build:css",
-    "dev": "npm run prepublishOnly -- -w"
+    "prepare": "npm run build:css && babel src/ -D -d lib",
+    "dev": "npm run prepare -- -w"
   },
   "description": "The magical effect making tiny-i18n could be used easily and edit live in react.",
   "keywords": [

@@ -20,7 +20,7 @@ export { default as inject } from './inject-i18n'
 export { default as transaction } from './transaction'
 
 const { createElement: pureCreateElement } = React
-const { i18n: pureI18n, getWord, setLanguage, extendDictionary, getCurrentLanguage, getDictionary } = tinyI18n
+const { i18n: pureI18n, getWord, setLanguage: pureSetLanguage, extendDictionary, getCurrentLanguage, getDictionary } = tinyI18n
 
 const badge = createSingleElementView()
 proxy(badge, 'open', function(open) {
@@ -30,7 +30,7 @@ proxy(badge, 'open', function(open) {
 })
 
 export const i18n = pureI18n
-// export const setLanguage = pureI18n
+export const setLanguage = pureSetLanguage
 export const createElement = pureCreateElement
 
 // Overwrites `tinyI18n.i18n` for inject some data.
@@ -75,7 +75,7 @@ function makeWrappedCreateElement(highlight) {
           function translatedGetter(key, argsGetter, lang = getCurrentLanguage()) {
             const data = [key].concat(argsGetter(lang))
             let old = getCurrentLanguage()
-            tinyI18n.setLanguage(lang)
+            setLanguage(lang)
             const rlt = rStrip(
               pureI18n.apply(null, data),
               (s, a, b, c, count) => {
@@ -84,7 +84,7 @@ function makeWrappedCreateElement(highlight) {
               },
               level - 1
             )
-            tinyI18n.setLanguage(old)
+            setLanguage(old)
             return rlt
           }
           // Strips the outermost wrapper
