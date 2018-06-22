@@ -7,7 +7,7 @@
     "server": "cd examples && node server.js",
     "gojs": "gojs -i examples/spa.js -p 10000",
     "build": "gojs -b examples/index.js",
-    "build:css": "lessc lib/style.less lib/style.css",
+    "build:css": "lessc src/style.less lib/style.css",
     "prepare": "npm run build:css && babel src/ -D -d lib",
     "dev": "npm run prepare -- -w"
   },
