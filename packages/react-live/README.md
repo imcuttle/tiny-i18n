@@ -24,6 +24,8 @@ npm install @tiny-i18n/react-live tiny-i18n
 ```javascript
 if (process.env.NODE_ENV !== 'production' && localStorage['i18n-edit-live']) {
   require('@tiny-i18n/react-live/register')
+  // Load style
+  require('@tiny-i18n/react-live/lib/style.css')
 }
 
 // NOTE: Do not use `import` syntax here
