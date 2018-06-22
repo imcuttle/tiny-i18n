@@ -1,5 +1,16 @@
 <a name="0.0.0"></a>
-# [0.0.0](https://github.com/imcuttle/tiny-i18n/compare/v1.0.0...v0.0.0) (2018-06-22)
+# [0.0.0](https://github.com/imcuttle/tiny-i18n/compare/v1.0.1...v0.0.0) (2018-06-22)
+
+
+### Bug Fixes
+
+* prepublishOnly to prepare ([3a17383](https://github.com/imcuttle/tiny-i18n/commit/3a17383))
+* **react-live:** wrappedSetLanguage make some side effect ([b0606db](https://github.com/imcuttle/tiny-i18n/commit/b0606db))
+
+
+
+<a name="1.0.1"></a>
+## [1.0.1](https://github.com/imcuttle/tiny-i18n/compare/v1.0.0...v1.0.1) (2018-06-22)
 
 
 
