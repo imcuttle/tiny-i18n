@@ -7,19 +7,31 @@
   "files": [
     "index.es5.js"
   ],
-  "description": "Tiny yet useful i18n helper.",
+  "description": "Tiny yet useful i18n library.",
   "main": "index.es5.js",
   "scripts": {
     "test": "jest",
     "prepublishOnly": "babel index.js -o index.es5.js"
   },
   "keywords": [
+    "react",
+    "edit-live",
+    "live",
+    "internationalization",
     "tiny-i18n",
     "i18n",
     "language"
   ],
-  "author": "",
-  "license": "ISC",
+  "author": "imcuttle",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imcuttle/tiny-i18n.git"
+  },
+  "bugs": {
+    "url": "https://github.com/imcuttle/tiny-i18n/issues"
+  },
+  "homepage": "https://github.com/imcuttle/tiny-i18n#readme",
   "devDependencies": {
   }
 }

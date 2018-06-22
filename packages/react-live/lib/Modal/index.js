@@ -81,7 +81,7 @@ var Header = exports.Header = function Header(_ref) {
       { className: prefix + 'header-buttons' },
       _react2.default.createElement(
         'span',
-        { onClick: onClose, className: prefix + 'header-btn close-btn' },
+        { onClick: onClose, title: 'Ctrl/Cmd + ]', className: prefix + 'header-btn close-btn' },
         '\xD7'
       )
     )

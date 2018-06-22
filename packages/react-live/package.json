@@ -3,13 +3,22 @@
   "version": "1.0.0",
   "main": "lib/index.js",
   "scripts": {
-    "example": "npx run-p -l server gojs",
+    "example": "run-p -l server gojs",
     "server": "cd examples && node server.js",
     "gojs": "gojs -i examples/spa.js -p 10000",
     "build": "gojs -b examples/index.js",
     "prepublishOnly": "babel src/ -D -d lib",
     "dev": "npm run prepublishOnly -- -w"
   },
+  "description": "The magical effect making tiny-i18n could be used easily and edit live in react.",
+  "keywords": [
+    "tiny-i18n",
+    "react",
+    "edit-live",
+    "live",
+    "internationalization",
+    "i18n"
+  ],
   "devDependencies": {
     "@tiny-i18n/express-live": "^1.0.0",
     "express": "^4.16.3",
@@ -27,5 +36,19 @@
   "dependencies": {
     "debug": "^3.1.0",
     "prop-types": "^15.6.1"
-  }
+  },
+  "directories": {
+    "example": "examples",
+    "lib": "lib"
+  },
+  "author": "imcuttle",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imcuttle/tiny-i18n.git"
+  },
+  "bugs": {
+    "url": "https://github.com/imcuttle/tiny-i18n/issues"
+  },
+  "homepage": "https://github.com/imcuttle/tiny-i18n#readme"
 }

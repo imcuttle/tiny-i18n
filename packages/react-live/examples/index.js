@@ -77,6 +77,8 @@ class View extends React.Component {
         <div title={i18n('hi') + ',' + i18n('tpl.name', i18n('cong'))}>
           {'Hover me! [translated words in title attribute] (The nested and concat case)'}
         </div>
+
+        <div>{i18n('hhshshs')}</div>
         {/*TODO BUG*/
         /*<div title={i18n('hi') + ',' + i18n('say.hi', i18n('tpl.name', i18n('cong')))}>{'Change my title attribute (The nested and concat case)'}</div>*/}
       </div>

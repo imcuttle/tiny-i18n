@@ -359,6 +359,7 @@ var ModalContent = function (_React$Component) {
             'button',
             {
               disabled: this.state.fetching || !inputValueList[index] || inputValueList[index] === getWord(idList[index], this.lang),
+              title: 'Ctrl/Cmd + S',
               className: 'i18n-modal-btn',
               onClick: this.onSave
             },

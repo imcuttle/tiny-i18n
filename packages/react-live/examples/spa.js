@@ -4,7 +4,7 @@
  * @date 2018/6/19
  * @description
  */
-import '../lib/register'
+import '../register'
 import { transaction } from '../'
 import { setDictionary, getLanguages, getCurrentLanguage, i18n, getDictionary } from 'tiny-i18n'
 import { Provider, inject } from '../'
@@ -17,10 +17,10 @@ let zhDict = require('./dict/zh-CN')
 let enDict = require('./dict/en-US')
 
 transaction.setConfig({
-  // fetchWord(data) {
-  //   console.log('fetchWord', data)
-  //   return 'sss'
-  // },
+  fetchWord(data) {
+    console.log('fetchWord', data)
+    return false
+  },
   fetchUpdate({ lang, key, value }) {
     return fetch('/i18n/update', {
       method: 'POST',
@@ -74,11 +74,9 @@ class View extends React.Component {
   }
 }
 
-const IView = inject(View)
-
 ReactDOM.render(
   <Provider>
-    <IView />
+    <View />
   </Provider>,
   window.root
 )

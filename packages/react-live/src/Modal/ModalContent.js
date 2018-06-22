@@ -232,6 +232,7 @@ export default class ModalContent extends React.Component {
                 !inputValueList[index] ||
                 inputValueList[index] === getWord(idList[index], this.lang)
               }
+              title={'Ctrl/Cmd + S'}
               className={'i18n-modal-btn'}
               onClick={this.onSave}
             >

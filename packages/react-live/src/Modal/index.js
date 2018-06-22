@@ -48,7 +48,7 @@ export const Header = ({ children, onClose /*onMinimize*/ }) => (
   <div className={prefix + 'header'}>
     {children}
     <div className={prefix + 'header-buttons'}>
-      <span onClick={onClose} className={prefix + 'header-btn close-btn'}>
+      <span onClick={onClose} title={'Ctrl/Cmd + ]'} className={prefix + 'header-btn close-btn'}>
         ×
       </span>
     </div>
