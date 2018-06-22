@@ -9,6 +9,8 @@
 
 [A demo](https://imcuttle.github.io/tiny-i18n/) and [video](http://obu9je6ng.bkt.clouddn.com/Jietu20180622-102135-HD.mp4) created by react and using edit-live.
 
+[![Edit kpow6rnnr](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/kpow6rnnr)
+
 ## Multi-Packages
 
 - [tiny-i18n](packages/tiny-i18n) - Tiny yet useful i18n library.
