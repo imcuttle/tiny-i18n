@@ -12,7 +12,7 @@
     "release": "lerna publish",
     "example": "lerna run --parallel example",
     "dev": "lerna run --parallel dev",
-    "prerelease": "npm test && lerna run changelog"
+    "prerelease": "npm test && npm run changelog"
   },
   "commitlint": {
     "extends": [

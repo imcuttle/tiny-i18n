@@ -108,6 +108,6 @@ module.exports = {
   update_fail: '更新失败',
   placeholder_input_grant_code_or_user_name: '请输入授予编号或员工姓名',
   please_take_attention: '请注意',
-  export_fail: 'export_failvalue1529594971415',
-  'export_fail_xxx': 'export_xxxx1529594971450'
+  export_fail: 'export_failvalue1529647128786',
+  'export_fail_xxx': 'export_xxxx1529647128820'
 };
