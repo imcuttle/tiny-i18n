@@ -13,5 +13,18 @@
   "peerDependencies": {
     "babel-core": "*",
     "express": "*"
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "imcuttle",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imcuttle/tiny-i18n.git"
+  },
+  "bugs": {
+    "url": "https://github.com/imcuttle/tiny-i18n/issues"
+  },
+  "homepage": "https://github.com/imcuttle/tiny-i18n#readme"
 }

@@ -51,5 +51,8 @@
   "bugs": {
     "url": "https://github.com/imcuttle/tiny-i18n/issues"
   },
-  "homepage": "https://github.com/imcuttle/tiny-i18n#readme"
+  "homepage": "https://github.com/imcuttle/tiny-i18n#readme",
+  "publishConfig": {
+    "access": "public"
+  }
 }
