@@ -11,7 +11,7 @@
   "main": "index.es5.js",
   "scripts": {
     "test": "jest",
-    "prepublishOnly": "babel index.js -o index.es5.js"
+    "prepare": "babel index.js -o index.es5.js"
   },
   "keywords": [
     "react",
