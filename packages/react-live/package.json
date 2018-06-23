@@ -32,7 +32,7 @@
   },
   "peerDependencies": {
     "react": "*",
-    "tiny-i18n": "^1.0.0"
+    "tiny-i18n": "^1.0.2"
   },
   "dependencies": {
     "debug": "^3.1.0",

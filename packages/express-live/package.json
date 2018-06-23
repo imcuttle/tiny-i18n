@@ -3,11 +3,11 @@
   "version": "1.0.2",
   "dependencies": {
     "@tiny-i18n/fs": "^1.0.2",
-    "@tiny-i18n/react-live": "^1.0.2",
     "body-parser": "^1.18.3"
   },
   "devDependencies": {
     "express": "^4.16.3",
+    "@tiny-i18n/react-live": "^1.0.2",
     "supertest": "^3.1.0"
   },
   "publishConfig": {
