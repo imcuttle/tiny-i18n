@@ -76,6 +76,23 @@ i18n('cancel') === 'Cancel'
 i18n('confirm', ',Cuttle' /* replaced by `${1}` */) === 'OK ,Cuttle'
 ```
 
+### createIsolateI18n()
+
+NOTE: It's useful for create the internal independent i18n environment
+
+//```javascript
+import { createIsolateI18n, setDictionary, i18n } from 'tiny-i18n'
+setDictionary({
+  cancel: 'Cancel',
+  confirm: 'OK ${1}'
+}, 'zh-CN') 
+i18n('cancel') === 'Cancel' // true
+
+const i = createIsolateI18n()
+i.i18n('cancel') // throws error
+// It should be call `i.setDictionary(...)` firstly.
+```
+
 
 ## Examples
 

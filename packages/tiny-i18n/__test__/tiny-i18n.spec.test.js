@@ -11,7 +11,8 @@ import {
   extendDictionary,
   getCurrentLanguage,
   setDictionary,
-  setLanguage
+  setLanguage,
+  createIsolateI18n
 } from '../index'
 
 
@@ -53,5 +54,14 @@ describe('tiny-i18n.spec', function () {
     setLanguage('en')
     expect(i18n('a')).toBe('a')
     expect(i18n('c', '哈哈')).toBe('c哈哈')
+  })
+
+  it('should createIsolateI18n', function () {
+    const i = createIsolateI18n()
+    expect(
+      () => {
+        i.i18n('c', '哈哈')
+      }
+    ).toThrow(/the dictionary of language:/)
   })
 })

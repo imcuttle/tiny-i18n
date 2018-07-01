@@ -89,7 +89,7 @@ exports.singleView = function(attributes, mountDOM) {
   if (typeof attributes === 'function') {
     attributes = {}
     mountDOM = void 0
-    return core()
+    return core(attributes)
   }
 
   return core
