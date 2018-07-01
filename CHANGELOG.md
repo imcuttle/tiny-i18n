@@ -1,5 +1,5 @@
-<a name="0.0.0"></a>
-# [0.0.0](https://github.com/imcuttle/tiny-i18n/compare/v1.0.3...v0.0.0) (2018-07-01)
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/imcuttle/tiny-i18n/compare/v1.0.3...v1.1.0) (2018-07-01)
 
 
 ### Performance Improvements
