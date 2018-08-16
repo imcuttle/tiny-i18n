@@ -61,38 +61,43 @@ exports.getOffset = function(el) {
 
 exports.singleView = function(attributes, mountDOM) {
   const center = createSingleElementView()
-  function core(Component) {
-    return class SingleView extends React.Component {
-      componentDidMount() {
-        center.open(this.comp, attributes, mountDOM)
-      }
 
-      componentDidUpdate() {
-        center.open(this.comp, attributes, mountDOM)
-      }
+  function getCoreFunc(attributes, mountDOM) {
+    return function core(Component) {
+      return class SingleView extends React.Component {
+        componentDidMount() {
+          center.open(this.comp, attributes, mountDOM)
+        }
 
-      componentWillUnmount() {
-        center.close()
-      }
+        componentDidUpdate() {
+          center.open(this.comp, attributes, mountDOM)
+        }
 
-      get comp() {
-        const { children, ...props } = this.props
-        return <Component {...props}>{children}</Component>
-      }
+        componentWillUnmount() {
+          center.close()
+        }
 
-      render() {
-        return null
+        get comp() {
+          const { children, ...props } = this.props
+          return <Component {...props}>{children}</Component>
+        }
+
+        render() {
+          return null
+        }
       }
     }
   }
 
+
   if (typeof attributes === 'function') {
+    let Component = attributes
     attributes = {}
     mountDOM = void 0
-    return core(attributes)
+    return getCoreFunc(attributes, mountDOM)(Component)
   }
 
-  return core
+  return getCoreFunc(attributes, mountDOM)
 }
 
 exports.isElementOf = Component => {
