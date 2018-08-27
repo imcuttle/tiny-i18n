@@ -97,7 +97,7 @@ i18n('confirm', ',Cuttle' /_ replaced by `${1}` _/) === 'OK ,Cuttle'
 
 NOTE: It's useful for create the internal independent i18n environment
 
-//```javascript
+```javascript
 import { createIsolateI18n, setDictionary, i18n } from 'tiny-i18n'
 setDictionary({
   cancel: 'Cancel',
