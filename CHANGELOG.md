@@ -7,14 +7,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ## [1.1.2](https://github.com/imcuttle/tiny-i18n/compare/v1.1.1...v1.1.2) (2018-08-27)
 
 
-
-
 **Note:** Version bump only for package tiny-i18n
-
-<a name="0.0.0"></a>
-# 0.0.0 (2018-08-27)
-
-
 
 <a name="1.1.1"></a>
 ## 1.1.1 (2018-08-27)
