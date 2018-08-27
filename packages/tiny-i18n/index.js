@@ -8,7 +8,7 @@ import getLocalLanguage from 'isomorphic-language'
 
 function createIsolateI18n() {
   const database = {}
-  let currLanguage = getLocalLanguage()
+  let currLanguage = (getLocalLanguage() || '').toLowerCase()
 
   function assertDictionary(language) {
     if (!getDictionary(language)) {
@@ -17,7 +17,7 @@ function createIsolateI18n() {
   }
 
   function getCurrentLanguage() {
-    return currLanguage
+    return currLanguage.toLowerCase()
   }
 
   function getLanguages() {
@@ -25,7 +25,7 @@ function createIsolateI18n() {
   }
 
   function getDictionary(language = getCurrentLanguage()) {
-    return database[language]
+    return database[language.toLowerCase()]
   }
 
   function getWord(key, language = getCurrentLanguage()) {
@@ -35,11 +35,13 @@ function createIsolateI18n() {
   }
 
   function setDictionary(dict, language = getCurrentLanguage()) {
+    language = language.toLowerCase()
     database[language] = dict
     return database[language]
   }
 
   function extendDictionary(dict, language = getCurrentLanguage()) {
+    language = language.toLowerCase()
     return setDictionary(
       {
         ...getDictionary(language),

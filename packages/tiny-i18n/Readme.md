@@ -7,41 +7,58 @@ Tiny yet useful i18n library.
 
 ## API
 
-### setDictionary 
+### setDictionary
+
 `(dict: object, lang: string = getCurrentLanguage()) => object`
 Set dictionary of `lang`.
 
+**NOTE: language field is non-case sensitivity.**
+
+**'zh-CN' has same effect with 'zh-cn'**
+
 ```javascript
-setDictionary({
-  cancel: 'Cancel',
-  confirm: 'OK'
-}, 'zh-CN')
+setDictionary(
+  {
+    cancel: 'Cancel',
+    confirm: 'OK'
+  },
+  'zh-CN'
+)
 ```
 
-### extendDictionary 
+### extendDictionary
+
 `(dict: object, lang: string = getCurrentLanguage()) => object`
 Extend dictionary of `lang`.
 
 ```javascript
-extendDictionary({
-  cancel: 'Cancel',
-  confirm: 'OK'
-}, 'zh-CN')
+extendDictionary(
+  {
+    cancel: 'Cancel',
+    confirm: 'OK'
+  },
+  'zh-CN'
+)
 ```
 
 ### getWord(key: string, lang: string = getCurrentLanguage())
+
 Get raw word (untranslated) of `key` in `lang` language environment.
 
 ```javascript
-setDictionary({
-  cancel: 'Cancel',
-  confirm: 'OK ${1}'
-}, 'zh-CN')
+setDictionary(
+  {
+    cancel: 'Cancel',
+    confirm: 'OK ${1}'
+  },
+  'zh-CN'
+)
 
 getWord('confirm', 'zh-CN') === 'OK ${1}'
 ```
 
 ### setLanguage(lang: string)
+
 Set current language.
 
 ### getDictionary: (lang: string = getCurrentLanguage()) => object
@@ -56,26 +73,26 @@ setDictionary(dict, 'zh-CN')
 getDictionary('zh-CN') === dict
 ```
 
-
 ### getCurrentLanguage: () => string
+
 **Note: tiny-i18n use [isomorphic-language](https://www.npmjs.com/package/isomorphic-language) to set current language at first time**
 
 ### i18n: (key: string ...args: string[]) => string
 
 Get **translated words** in current language.
 
-```javascript
+//```javascript
 setDictionary({
-  cancel: 'Cancel',
-  confirm: 'OK ${1}'
+cancel: 'Cancel',
+confirm: 'OK ${1}'
 }, 'zh-CN')
 setLanguage('zh-CN')
 getCurrentLanguage() === 'zh-CN'
 
 i18n('cancel') === 'Cancel'
-i18n('confirm', ',Cuttle' /* replaced by `${1}` */) === 'OK ,Cuttle'
-```
+i18n('confirm', ',Cuttle' /_ replaced by `${1}` _/) === 'OK ,Cuttle'
 
+````
 ### createIsolateI18n()
 
 NOTE: It's useful for create the internal independent i18n environment
@@ -85,35 +102,35 @@ import { createIsolateI18n, setDictionary, i18n } from 'tiny-i18n'
 setDictionary({
   cancel: 'Cancel',
   confirm: 'OK ${1}'
-}, 'zh-CN') 
+}, 'zh-CN')
 i18n('cancel') === 'Cancel' // true
 
 const i = createIsolateI18n()
 i.i18n('cancel') // throws error
 // It should be call `i.setDictionary(...)` firstly.
-```
-
+````
 
 ## Examples
 
 ```javascript
-const {
-  setDictionary,
-  getDictionary,
-  i18n,
-  setLanguage
-} = require('tiny-i18n')
+const { setDictionary, getDictionary, i18n, setLanguage } = require('tiny-i18n')
 
-setDictionary({
-  a: '啊',
-  b: '吧',
-  c: '你好${1}'
-}, 'zh')
-setDictionary({
-  a: 'a',
-  b: 'b',
-  c: 'c${1}'
-}, 'en')
+setDictionary(
+  {
+    a: '啊',
+    b: '吧',
+    c: '你好${1}'
+  },
+  'zh'
+)
+setDictionary(
+  {
+    a: 'a',
+    b: 'b',
+    c: 'c${1}'
+  },
+  'en'
+)
 
 expect(getDictionary('zh')).toEqual({
   a: '啊',
