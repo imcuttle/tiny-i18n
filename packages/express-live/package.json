@@ -1,12 +1,12 @@
 {
   "name": "@tiny-i18n/express-live",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "dependencies": {
-    "@tiny-i18n/fs": "^1.1.0",
+    "@tiny-i18n/fs": "^1.1.1",
     "body-parser": "^1.18.3"
   },
   "devDependencies": {
-    "@tiny-i18n/react-live": "^1.1.0",
+    "@tiny-i18n/react-live": "^1.1.1",
     "express": "^4.16.3",
     "supertest": "^3.1.0"
   },
