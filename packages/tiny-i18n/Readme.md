@@ -81,7 +81,7 @@ getDictionary('zh-CN') === dict
 
 Get **translated words** in current language.
 
-//```javascript
+```javascript
 setDictionary({
 cancel: 'Cancel',
 confirm: 'OK ${1}'
