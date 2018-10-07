@@ -1,4 +1,5 @@
 # tiny-i18n
+## Important: dev branch is working for `react-live` to be works for any i18n env (WIP).
 
 [![build status](https://img.shields.io/travis/imcuttle/tiny-i18n/master.svg?style=flat-square)](https://travis-ci.org/imcuttle/tiny-i18n)
 [![Test coverage](https://img.shields.io/codecov/c/github/imcuttle/tiny-i18n.svg?style=flat-square)](https://codecov.io/github/imcuttle/tiny-i18n?branch=master)

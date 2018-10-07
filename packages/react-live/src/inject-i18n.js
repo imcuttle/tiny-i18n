@@ -14,7 +14,7 @@ function isStateless(component) {
 
 export default function inject(component) {
   let displayName =
-    'Inject-' +
+    'InjectI18n-' +
     (component.displayName || component.name || (component.constructor && component.constructor.name) || 'Unknown')
 
   if (isStateless(component)) {

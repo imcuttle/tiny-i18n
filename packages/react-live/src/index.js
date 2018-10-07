@@ -6,22 +6,38 @@
  */
 
 import * as React from 'react'
-import { BadgeInner } from './Badge'
+import BadgeInner from './Badge'
 import { highlightActiveBadge, unHighlightActiveBadge, updateDOM } from './dom-utils'
 import { open } from './Modal/index'
-import ModalContent from './Modal/ModalContent'
 import { getMaxLevel, rStrip, proxy, getOffset, toWrappedString, createSingleElementView, strip } from './utils'
-import transaction from './transaction'
 
-const tinyI18n = require('tiny-i18n')
+import makeModalContent from './Modal/makeModalContent'
+import makeTransaction from './makeTransaction'
 
-export { default as Provider } from './Provider'
-export { default as inject } from './inject-i18n'
-export { default as transaction } from './transaction'
+// export { default as Provider } from './Provider'
+// export { default as inject } from './inject-i18n'
+// export { default as transaction } from './transaction'
+
+function register(pureI18n) {
+  const tinyI18n = {
+    ...pureI18n,
+    i18n: wrappedI18n,
+    setLanguage: wrapSetLanguage(pureI18n.setLanguage)
+  }
+
+  const transaction = makeTransaction(tinyI18n)
+  const ModalContent = makeModalContent(tinyI18n, { transaction, pureI18n, wrapped_unhighlight_createElement })
+
+
+  // Overwrites `React.createElement` for highlighting translated words.
+  export const wrappedCreateElement = wrapCreateElement(tinyI18n, { highlight: true, transaction, ModalContent })
+  // Used in ModalContent
+  export const wrapped_unhighlight_createElement = wrapCreateElement(tinyI18n, { highlight: false, transaction })
+
+  return tinyI18n
+}
 
 const { createElement: pureCreateElement } = React
-const { i18n: pureI18n, getWord, setLanguage: pureSetLanguage, extendDictionary, getCurrentLanguage, getDictionary } = tinyI18n
-
 const badge = createSingleElementView()
 proxy(badge, 'open', function(open) {
   return function(props, attributes, mountDom) {
@@ -34,7 +50,7 @@ export const setLanguage = pureSetLanguage
 export const createElement = pureCreateElement
 
 // Overwrites `tinyI18n.i18n` for inject some data.
-export function wrappedI18n(key, ...args) {
+function wrappedI18n(key, ...args) {
   const argumentArray = [].slice.call(arguments)
 
   let maxLev = 0
@@ -45,7 +61,7 @@ export function wrappedI18n(key, ...args) {
   return toWrappedString(JSON.stringify(argumentArray), 1 + maxLev)
 }
 
-function makeWrappedCreateElement(highlight) {
+function wrapCreateElement(i18n, { highlight, transaction, ModalContent }) {
   return function wrappedCreateElement(type, config, ...children) {
     const keyListContainer = []
     const pathMapContainer = {}
@@ -164,12 +180,6 @@ function makeWrappedCreateElement(highlight) {
         return function onMouseEnter({ target }) {
           badge.close()
           const ctx = {}
-          // function getTranslatedList() {
-          //   return translatedGetterList.map(cb => cb())
-          // }
-          // function getArgsList() {
-          //   return argsGetterList.map(cb => cb())
-          // }
           const content = (
             <ModalContent
               onClose={unHighlightActiveBadge}
@@ -235,13 +245,9 @@ function makeWrappedCreateElement(highlight) {
   }
 }
 
-// Overwrites `React.createElement` for highlighting translated words.
-export const wrappedCreateElement = makeWrappedCreateElement(true)
-
-export function wrappedSetLanguage(language) {
-  transaction.register(language)
-  return setLanguage.apply(this, arguments)
+function wrapSetLanguage(setLanguage, { transaction }) {
+  return function(language) {
+    transaction.register(language)
+    return setLanguage.apply(this, arguments)
+  }
 }
-
-// Used in ModalContent
-export const wrapped_unhighlight_createElement = makeWrappedCreateElement(false)
