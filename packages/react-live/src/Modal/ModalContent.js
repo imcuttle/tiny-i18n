@@ -5,12 +5,8 @@
  * @description:
  */
 import React from 'react'
-import { i18n, wrapped_unhighlight_createElement } from '../'
+import PropTypes from 'prop-types'
 import { close, Header, Body, Footer, Sep } from './index'
-import transaction from '../transaction'
-
-const tinyI18n = require('tiny-i18n')
-const { getWord, setLanguage, getLanguages, getCurrentLanguage } = tinyI18n
 
 const bodyPrefix = 'i18n-modal-body-'
 export default class ModalContent extends React.Component {
@@ -23,7 +19,14 @@ export default class ModalContent extends React.Component {
     fetching: false
   }
 
+  static propTypes = {
+    transaction: PropTypes.any.isRequired,
+    tinyI18n: PropTypes.any.isRequired,
+  }
+
   static defaultProps = {
+    transaction: null,
+    tinyI18n: null,
     keyList: [],
     argsList: [],
     // lang => string[]
@@ -52,7 +55,7 @@ export default class ModalContent extends React.Component {
     const list = this.idList
     const { index, inputValueList } = this.state
     const id = list[index]
-    const str = await transaction.getLangInfo({ id })
+    const str = await this.props.transaction.getLangInfo({ id })
     if (typeof str === 'string' && str) {
       const newValue = inputValueList.slice()
       newValue[index] = str
@@ -63,15 +66,15 @@ export default class ModalContent extends React.Component {
   }
 
   componentDidMount() {
-    transaction.register(this.lang)
+    this.props.transaction.register(this.lang)
 
     // this.handleUpdateLang(this.lang)
-    transaction.addListener('update:lang', this.handleUpdateLang)
+    this.props.transaction.addListener('update:lang', this.handleUpdateLang)
     const list = this.idList
     this.props.onActiveUpdate(list[this.state.index], null)
   }
   componentWillUnmount() {
-    transaction.removeListener('update:lang', this.handleUpdateLang)
+    this.props.transaction.removeListener('update:lang', this.handleUpdateLang)
   }
   componentDidUpdate(oldProps, oldState) {
     const list = this.idList
@@ -116,7 +119,7 @@ export default class ModalContent extends React.Component {
   }
 
   get lang() {
-    return transaction.context.lang || getCurrentLanguage()
+    return this.props.transaction.context.lang || this.props.tinyI18n.getCurrentLanguage()
   }
 
   close = () => {
@@ -133,14 +136,14 @@ export default class ModalContent extends React.Component {
         <Header onClose={this.close}>i18n Edit Live</Header>
         <Body>
           <div className="i18n-lang-context">
-            {getLanguages().map(lang => {
+            {this.props.tinyI18n.getLanguages().map(lang => {
               return (
                 <button
                   key={lang}
                   disabled={this.lang === lang}
                   className="i18n-modal-btn sm"
                   onClick={() => {
-                    transaction.register(lang)
+                    this.props.transaction.register(lang)
                     // this.handleUpdateLang(lang)
                     this.forceUpdate()
                   }}
@@ -158,13 +161,12 @@ export default class ModalContent extends React.Component {
               <span>{idList[index]}</span>
             </div>
             {argsList[index] &&
-              !!argsList[index].length &&
-             /*Avoides highlight (arguments) because of overwriting React.createElement */
-             wrapped_unhighlight_createElement('div', { className: bodyPrefix + 'key' },
-                `Arguments: [${argsList[index].join(', ')}]`
+              !!argsList[index].length && (
+                /*Avoides highlight (arguments) because of overwriting React.createElement */
+                <div className={bodyPrefix + 'key'}>Arguments: [{argsList[index].join(', ')}]</div>
               )}
             {/*Avoides highlight (arguments) because of overwriting React.createElement */}
-            {wrapped_unhighlight_createElement('div', { className: bodyPrefix + 'raw' }, rawList[index])}
+            {<div className={bodyPrefix + 'raw'}>Arguments: [{rawList[index]}]</div>}
           </div>
           <Sep />
           <textarea
@@ -230,7 +232,7 @@ export default class ModalContent extends React.Component {
               disabled={
                 this.state.fetching ||
                 !inputValueList[index] ||
-                inputValueList[index] === getWord(idList[index], this.lang)
+                inputValueList[index] === this.props.tinyI18n.getWord(idList[index], this.lang)
               }
               title={'Ctrl/Cmd + S'}
               className={'i18n-modal-btn'}

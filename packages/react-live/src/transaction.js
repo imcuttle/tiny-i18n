@@ -7,10 +7,12 @@
 
 import EventEmitter from 'events'
 
-const tinyI18n = require('tiny-i18n')
-const { getWord } = tinyI18n
-
-class MyEventEmitter extends EventEmitter {
+class Transaction extends EventEmitter {
+  constructor(tinyI18n, config) {
+    super()
+    this.tinyI18n = tinyI18n;
+    this.setConfig(config)
+  }
   context = { data: { reqs: [] } }
   config = {}
 
@@ -21,7 +23,7 @@ class MyEventEmitter extends EventEmitter {
    * @param config.fetchUpdate
    */
   setConfig(config = {}) {
-    this.config = config
+    this.config = config || {}
   }
 
   register(lang) {
@@ -48,7 +50,7 @@ class MyEventEmitter extends EventEmitter {
       }
       return null
     }
-    return getWord(extra.id, this.context.lang)
+    return this.tinyI18n.getWord(extra.id, this.context.lang)
   }
 
   async update({ id, value, lang = this.context.lang }) {
@@ -68,22 +70,6 @@ class MyEventEmitter extends EventEmitter {
     return true
   }
 
-  // async push() {
-  //   if (this.config.fetchPush) {
-  //     try {
-  //       if (this.context.data.reqs.length) {
-  //         const data = await this.config.fetchPush(this.context.data.reqs)
-  //         this.emit('push', data)
-  //         this.context.data.reqs = []
-  //       }
-  //     } catch (err) {
-  //       err.id = 'push'
-  //       this.emit('error', err)
-  //     }
-  //   }
-  // }
-
 }
 
-const main = new MyEventEmitter()
-export default main
+export default Transaction

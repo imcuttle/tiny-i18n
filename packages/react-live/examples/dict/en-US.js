@@ -6,7 +6,7 @@
  */
 module.exports = {
   hi: 'hi',
-  cong: 'Cong',
+  cong: '聪s',
   'tpl.name': 'Mr ${1}',
   'say.hi': 'Hi, ${1}.ww '
 };

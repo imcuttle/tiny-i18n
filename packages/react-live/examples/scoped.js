@@ -4,60 +4,55 @@
  * @date 2018/6/19
  * @description
  */
-import '../lib/register'
+import '../src/style.less'
+
+import reactI18nLive from '../src'
 import { setDictionary, getLanguages, getCurrentLanguage, i18n, getDictionary } from 'tiny-i18n'
-import { Provider, inject, transaction } from '../'
+import { Provider, inject } from '../'
 
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import '../lib/style.less'
 
-const KEY = 'i18n_'
-let zhDict
-let enDict
-if (localStorage[KEY + 'zh-CN']) {
-  zhDict = JSON.parse(localStorage[KEY + 'zh-CN'])
-} else {
-  zhDict = {
-    hi: '你好',
-    cong: '聪',
-    'tpl.name': '${1}同学',
-    'say.hi': '你好呀, ${1}'
-  }
-}
-if (localStorage[KEY + 'en-US']) {
-  enDict = JSON.parse(localStorage[KEY + 'en-US'])
-} else {
-  enDict = {
-    hi: 'hi',
-    cong: 'Cong',
-    'tpl.name': 'Mr ${1}',
-    'say.hi': 'Hi, ${1}.'
-  }
-}
+const { transaction } = reactI18nLive
+let zhDict = require('./dict/zh-CN')
+let enDict = require('./dict/en-US')
 
-transaction
-  .on('afterUpdate', ({ lang }) => {
-    const dict = getDictionary(lang)
-    if (lang === 'en-US') {
-      localStorage[KEY + 'en-US'] = JSON.stringify(dict)
-    }
-    else {
-      localStorage[KEY + 'zh-CN'] = JSON.stringify(dict)
-    }
-  })
-  .on('error', e => {
-    console.error('error', e)
-  })
+transaction.setConfig({
+  fetchWord(data) {
+    console.log('fetchWord', data)
+    return false
+  },
+  fetchUpdate({ lang, key, value }) {
+    return fetch('/i18n/update', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify({ lang, key, value })
+    })
+      .then(res => res.json())
+      .then(json => {
+        console.log(json)
+      })
+  }
+})
+transaction.on('error', e => {
+  console.error('error', e)
+})
 
 setDictionary(zhDict, 'zh-CN')
 
 setDictionary(enDict, 'en-US')
 
+@inject
 class View extends React.Component {
   changeLanguage = lang => {
     this.context.i18n.setLanguage(lang)
   }
+  componentWillMount() {
+    this.changeLanguage(getLanguages()[0])
+  }
+
   render() {
     return (
       <div>
@@ -77,8 +72,6 @@ class View extends React.Component {
         <div title={i18n('hi') + ',' + i18n('tpl.name', i18n('cong'))}>
           {'Hover me! [translated words in title attribute] (The nested and concat case)'}
         </div>
-
-        <div>{i18n('hhshshs')}</div>
         {/*TODO BUG*/
         /*<div title={i18n('hi') + ',' + i18n('say.hi', i18n('tpl.name', i18n('cong')))}>{'Change my title attribute (The nested and concat case)'}</div>*/}
       </div>
@@ -86,11 +79,9 @@ class View extends React.Component {
   }
 }
 
-const IView = inject(View)
-
 ReactDOM.render(
   <Provider>
-    <IView />
+    <View />
   </Provider>,
   window.root
 )
