@@ -2,7 +2,9 @@
   "name": "tiny-i18n",
   "version": "1.1.2",
   "dependencies": {
-    "isomorphic-language": "^0.0.0"
+    "isomorphic-language": "^0.0.0",
+    "react-live": "^2.2.2",
+    "use-force-update": "^1.0.7"
   },
   "files": [
     "index.es5.js"

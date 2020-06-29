@@ -3,7 +3,9 @@
   "version": "1.1.2",
   "dependencies": {
     "@tiny-i18n/fs": "^1.1.2",
-    "body-parser": "^1.18.3"
+    "body-parser": "^1.18.3",
+    "react-live": "^2.2.2",
+    "use-force-update": "^1.0.7"
   },
   "devDependencies": {
     "@tiny-i18n/react-live": "^1.1.2",

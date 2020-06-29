@@ -11,12 +11,9 @@ import { highlightActiveBadge, unHighlightActiveBadge, updateDOM } from './dom-u
 import { open } from './Modal/index'
 import ModalContent from './Modal/ModalContent'
 import { getMaxLevel, rStrip, proxy, getOffset, toWrappedString, createSingleElementView, strip } from './utils'
-import Transaction from './transaction'
+import Transaction from './Transaction'
 
-let defaultTinyI18n = null
-try {
-  defaultTinyI18n = require('tiny-i18n')
-} catch (e) {}
+import defaultTinyI18n from './defaultTinyI18n'
 
 const badge = createSingleElementView()
 proxy(badge, 'open', function(open) {
@@ -29,7 +26,7 @@ const defaultSetting = {
   enabled: false
 }
 
-export default function createReactI18nLive({
+export default function createReactI18nLiveCore({
   tinyI18n = defaultTinyI18n,
   transaction,
   createElement = React.createElement
@@ -57,7 +54,7 @@ export default function createReactI18nLive({
     tinyI18n: {
       ...tinyI18n,
       setLanguage: createWrappedSetLanguage(tinyI18n.setLanguage.bind(tinyI18n), { setting, transaction }),
-      i18n: createWrappedI18n(tinyI18n.i18n.bind(tinyI18n), { setting, transaction })
+      i18n: createWrappedI18n(tinyI18n.i18n.bind(tinyI18n), { setting })
     },
     createElement: makeWrappedCreateElement(createElement, {
       tinyI18n,

@@ -6,11 +6,12 @@
  */
 
 import EventEmitter from 'events'
+import defaultTinyI18n from './defaultTinyI18n'
 
 class Transaction extends EventEmitter {
   constructor(tinyI18n, config) {
     super()
-    this.tinyI18n = tinyI18n;
+    this.tinyI18n = tinyI18n || defaultTinyI18n
     this.setConfig(config)
   }
   context = { data: { reqs: [] } }
@@ -69,7 +70,6 @@ class Transaction extends EventEmitter {
     }
     return true
   }
-
 }
 
 export default Transaction

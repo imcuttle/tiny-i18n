@@ -4,17 +4,24 @@
  * @date 2018/6/19
  * @description
  */
-import {use, unuse} from '../src/register';
+import { use, unuse } from '../src/register'
 import '../src/style.less'
 
 import reactI18nLive from '../src'
 import { setDictionary, getLanguages, getCurrentLanguage, i18n, getDictionary } from 'tiny-i18n'
-import { Provider, inject } from '../'
 
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 
-const { transaction, configure, getSetting } = reactI18nLive
+const {
+  transaction,
+  withTinyI18n,
+  configure,
+  getSetting,
+  useTinyI18n,
+  ReactI18nLiveProvider,
+  ReactI18nLiveConsumer
+} = reactI18nLive
 let zhDict = require('./dict/zh-CN')
 let enDict = require('./dict/en-US')
 
@@ -44,10 +51,10 @@ transaction.on('error', e => {
 setDictionary(zhDict, 'zh-CN')
 setDictionary(enDict, 'en-US')
 
-@inject
+@withTinyI18n
 class View extends React.Component {
   changeLanguage = lang => {
-    this.context.i18n.setLanguage(lang)
+    this.props.tinyI18n.setLanguage(lang)
   }
   componentWillMount() {
     this.changeLanguage(getLanguages()[0])
@@ -80,20 +87,14 @@ class View extends React.Component {
           {i18n('hi')},{i18n('cong', i18n('cong', 'hjhjhj'))}
         </div>
         <div title={i18n('say.hi', 'hah')}>{i18n('say.hi', i18n('cong'))}</div>
-
-        <div title={i18n('hi') + ',' + i18n('tpl.name', i18n('cong'))}>
-          {'Hover me! [translated words in title attribute] (The nested and concat case)'}
-        </div>
-        {/*TODO BUG*/
-        /*<div title={i18n('hi') + ',' + i18n('say.hi', i18n('tpl.name', i18n('cong')))}>{'Change my title attribute (The nested and concat case)'}</div>*/}
       </div>
     )
   }
 }
 
 ReactDOM.render(
-  <Provider>
+  <ReactI18nLiveProvider>
     <View />
-  </Provider>,
+  </ReactI18nLiveProvider>,
   window.root
 )

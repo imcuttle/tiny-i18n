@@ -4,7 +4,9 @@
   "description": "The utilities about some actions dealing with i18n files.",
   "dependencies": {
     "babel-core": "^6.26.0",
-    "pify": "^3.0.0"
+    "pify": "^3.0.0",
+    "react-live": "^2.2.2",
+    "use-force-update": "^1.0.7"
   },
   "publishConfig": {
     "access": "public"
