@@ -40,7 +40,10 @@ export default function createProviderContext(tinyI18n = { ...defaultTinyI18n })
       () => {
         return {
           ...tinyI18n,
-          setLanguage: wrapFn(tinyI18n.setLanguage, forceUpdate)
+          origin: tinyI18n,
+          setLanguage: wrapFn(tinyI18n.setLanguage, forceUpdate),
+          extendDictionary: wrapFn(tinyI18n.extendDictionary, forceUpdate),
+          setDictionary: wrapFn(tinyI18n.setDictionary, forceUpdate),
         }
       },
       [v, forceUpdate]
