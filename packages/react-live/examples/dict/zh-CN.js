@@ -5,7 +5,7 @@
  * @description
  */
 module.exports = {
-  hi: 'sssshisss',
+  hi: '你好嘻嘻嘻撒打收缩',
   cong: '聪s',
   'tpl.name': '${1}同学',
   'say.hi': '你好呀, ${1} wdwdwwww说说 ww',

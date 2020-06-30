@@ -4,10 +4,10 @@
  * @date 2018/6/19
  * @description
  */
-import { use, unuse } from '../src/register'
 import '../src/style.less'
-
+import { use, unuse } from '../src/register'
 import reactI18nLive from '../src'
+
 import { setDictionary, getLanguages, getCurrentLanguage, i18n, getDictionary } from 'tiny-i18n'
 
 import * as React from 'react'
@@ -87,6 +87,7 @@ class View extends React.Component {
           {i18n('hi')},{i18n('cong', i18n('cong', 'hjhjhj'))}
         </div>
         <div title={i18n('say.hi', 'hah')}>{i18n('say.hi', i18n('cong'))}</div>
+        <div title={i18n('hi') + ',' + i18n('say.hi', i18n('tpl.name', i18n('cong')))}>{'Change my title attribute (The nested and concat case)'}</div>
       </div>
     )
   }

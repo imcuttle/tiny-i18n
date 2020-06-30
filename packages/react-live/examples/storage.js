@@ -4,13 +4,15 @@
  * @date 2018/6/19
  * @description
  */
-import '../lib/register'
+import '../src/register'
 import { setDictionary, getLanguages, getCurrentLanguage, i18n, getDictionary } from 'tiny-i18n'
-import { Provider, inject, transaction } from '../'
+import reactI18nLive from '../src/index'
 
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import '../lib/style.less'
+import '../src/style.less'
+
+const { transaction, withTinyI18n, ReactI18nLiveProvider } = reactI18nLive
 
 const KEY = 'i18n_'
 let zhDict
@@ -41,8 +43,7 @@ transaction
     const dict = getDictionary(lang)
     if (lang === 'en-US') {
       localStorage[KEY + 'en-US'] = JSON.stringify(dict)
-    }
-    else {
+    } else {
       localStorage[KEY + 'zh-CN'] = JSON.stringify(dict)
     }
   })
@@ -54,9 +55,10 @@ setDictionary(zhDict, 'zh-CN')
 
 setDictionary(enDict, 'en-US')
 
+@withTinyI18n
 class View extends React.Component {
   changeLanguage = lang => {
-    this.context.i18n.setLanguage(lang)
+    this.props.tinyI18n.setLanguage(lang)
   }
   componentWillMount() {
     this.changeLanguage(getLanguages()[0])
@@ -90,11 +92,9 @@ class View extends React.Component {
   }
 }
 
-const IView = inject(View)
-
 ReactDOM.render(
-  <Provider>
-    <IView />
-  </Provider>,
+  <ReactI18nLiveProvider>
+    <View />
+  </ReactI18nLiveProvider>,
   window.root
 )

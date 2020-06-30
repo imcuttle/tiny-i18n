@@ -1,19 +1,19 @@
-/**
- * @file index
- * @author Cuttle Cong
- * @date 2018/6/19
- * @description
- */
+/** @jsx createElement */
 import '../src/style.less'
-
-import reactI18nLive from '../src'
-import { setDictionary, getLanguages, getCurrentLanguage, i18n, getDictionary } from 'tiny-i18n'
-import { Provider, inject } from '../'
-
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 
-const { transaction } = reactI18nLive
+import { createReactI18nLive } from '../src'
+
+import { createIsolateI18n } from 'tiny-i18n'
+
+const { tinyI18n, transaction, withTinyI18n, ReactI18nLiveProvider, createElement, configure } = createReactI18nLive(createIsolateI18n())
+configure({
+  enabled: true
+})
+const { setDictionary, getLanguages, getCurrentLanguage, i18n, getDictionary } = tinyI18n
+
+
 let zhDict = require('./dict/zh-CN')
 let enDict = require('./dict/en-US')
 
@@ -44,10 +44,10 @@ setDictionary(zhDict, 'zh-CN')
 
 setDictionary(enDict, 'en-US')
 
-@inject
+@withTinyI18n
 class View extends React.Component {
   changeLanguage = lang => {
-    this.context.i18n.setLanguage(lang)
+    this.props.tinyI18n.setLanguage(lang)
   }
   componentWillMount() {
     this.changeLanguage(getLanguages()[0])
@@ -80,8 +80,8 @@ class View extends React.Component {
 }
 
 ReactDOM.render(
-  <Provider>
+  <ReactI18nLiveProvider>
     <View />
-  </Provider>,
+  </ReactI18nLiveProvider>,
   window.root
 )

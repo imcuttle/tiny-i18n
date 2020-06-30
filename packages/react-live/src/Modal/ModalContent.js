@@ -1,3 +1,4 @@
+/** @jsx this.props.createElement */
 /**
  * @file: ModalContent
  * @author: Cuttle Cong
@@ -21,10 +22,11 @@ export default class ModalContent extends React.Component {
 
   static propTypes = {
     transaction: PropTypes.any.isRequired,
-    tinyI18n: PropTypes.any.isRequired,
+    tinyI18n: PropTypes.any.isRequired
   }
 
   static defaultProps = {
+    createElement: React.createElement,
     transaction: null,
     tinyI18n: null,
     keyList: [],
@@ -137,19 +139,19 @@ export default class ModalContent extends React.Component {
         <Body>
           <div className="i18n-lang-context">
             {this.props.tinyI18n.getLanguages().map(lang => {
-              return (
-                <button
-                  key={lang}
-                  disabled={this.lang === lang}
-                  className="i18n-modal-btn sm"
-                  onClick={() => {
+              return this.props.createElement(
+                'button',
+                {
+                  key: lang,
+                  disabled: this.lang === lang,
+                  className: 'i18n-modal-btn sm',
+                  onClick: () => {
                     this.props.transaction.register(lang)
                     // this.handleUpdateLang(lang)
                     this.forceUpdate()
-                  }}
-                >
-                  {lang}
-                </button>
+                  }
+                },
+                lang
               )
             })}
           </div>

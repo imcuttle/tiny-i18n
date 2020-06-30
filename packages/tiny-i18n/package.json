@@ -7,9 +7,11 @@
     "use-force-update": "^1.0.7"
   },
   "files": [
+    "index.js",
     "index.es5.js"
   ],
   "description": "Tiny yet useful i18n library.",
+  "module": "index.js",
   "main": "index.es5.js",
   "scripts": {
     "test": "jest",

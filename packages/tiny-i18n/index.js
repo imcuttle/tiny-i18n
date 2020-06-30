@@ -60,7 +60,8 @@ function createIsolateI18n() {
     assertDictionary(current)
     const value = getWord(key, current)
     if (typeof value !== 'string') {
-      process.env.NODE_ENV !== 'production' && console.error(`[tiny-i18n] Error: the \`${key}\` word is not found in ${current} language.`)
+      process.env.NODE_ENV !== 'production' &&
+        console.error(`[tiny-i18n] Error: the \`${key}\` word is not found in ${current} language.`)
       return `{{${key}}}`
     }
     return value.replace(/\${(\d+)}/g, (_, $1) => {
@@ -80,7 +81,8 @@ function createIsolateI18n() {
   }
 }
 
-module.exports = {
-  ...createIsolateI18n(),
-  createIsolateI18n
-}
+const tinyI18nInstance = createIsolateI18n()
+
+const tinyI18n = Object.assign({ createIsolateI18n }, tinyI18nInstance)
+
+export default tinyI18n

@@ -15,6 +15,7 @@ import Transaction from './Transaction'
 
 import defaultTinyI18n from './defaultTinyI18n'
 
+
 const badge = createSingleElementView()
 proxy(badge, 'open', function(open) {
   return function(props, attributes, mountDom) {
@@ -31,7 +32,7 @@ export default function createReactI18nLiveCore({
   transaction,
   createElement = React.createElement
 } = {}) {
-  tinyI18n = {...tinyI18n}
+  tinyI18n = { ...tinyI18n }
   if (!(transaction instanceof Transaction)) {
     transaction = new Transaction(tinyI18n, transaction)
   }
@@ -51,10 +52,13 @@ export default function createReactI18nLiveCore({
     getSetting() {
       return setting
     },
+    originTinyI18n: tinyI18n,
     tinyI18n: {
       ...tinyI18n,
       setLanguage: createWrappedSetLanguage(tinyI18n.setLanguage.bind(tinyI18n), { setting, transaction }),
-      i18n: createWrappedI18n(tinyI18n.i18n.bind(tinyI18n), { setting })
+      i18n: createWrappedI18n(tinyI18n.i18n.bind(tinyI18n), {
+        setting
+      })
     },
     createElement: makeWrappedCreateElement(createElement, {
       tinyI18n,
@@ -102,7 +106,6 @@ function makeWrappedCreateElement(
 
       let maxLev = 1
       function recursiveStrip(string) {
-        console.log('string', string)
         return strip(string, (str, level) => {
           const data = JSON.parse(str)
           if (!isNaN(level)) {
@@ -210,14 +213,11 @@ function makeWrappedCreateElement(
         return function onMouseEnter({ target }) {
           badge.close()
           const ctx = {}
-          // function getTranslatedList() {
-          //   return translatedGetterList.map(cb => cb())
-          // }
-          // function getArgsList() {
-          //   return argsGetterList.map(cb => cb())
-          // }
+          console.log('createElement', createElement)
+          console.log('tinyI18n', tinyI18n)
           const content = (
             <ModalContent
+              createElement={createElement}
               transaction={transaction}
               tinyI18n={tinyI18n}
               onClose={unHighlightActiveBadge}
@@ -227,7 +227,6 @@ function makeWrappedCreateElement(
               }}
               ref={ref => (ctx.content = ref)}
               keyList={keyListContainer}
-              // argsList={getArgsList()}
               translatedGetterList={translatedGetterList}
               argsGetterList={argsGetterList}
               inputValueList={keyListContainer.map(key => tinyI18n.getWord(key))}
@@ -261,7 +260,7 @@ function makeWrappedCreateElement(
           )
           const dom = badge.open({
             transaction,
-            tinyI18n,
+            tinyI18n: tinyI18n,
             onClick() {
               open({ children: content })
             }
