@@ -7,21 +7,15 @@
 import '../src/style.less'
 import { use, unuse } from '../src/register'
 import reactI18nLive from '../src'
+import { I18nProvider, withTinyI18n } from '@rcp/use.i18ncontext'
 
-import { setDictionary, getLanguages, getCurrentLanguage, i18n, getDictionary } from 'tiny-i18n'
+import tinyI18n from 'tiny-i18n'
+const { setDictionary, getLanguages, getCurrentLanguage, i18n, getDictionary } = tinyI18n
 
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 
-const {
-  transaction,
-  withTinyI18n,
-  configure,
-  getSetting,
-  useTinyI18n,
-  ReactI18nLiveProvider,
-  ReactI18nLiveConsumer
-} = reactI18nLive
+const { transaction, configure, getSetting } = reactI18nLive
 let zhDict = require('./dict/zh-CN')
 let enDict = require('./dict/en-US')
 
@@ -87,15 +81,17 @@ class View extends React.Component {
           {i18n('hi')},{i18n('cong', i18n('cong', 'hjhjhj'))}
         </div>
         <div title={i18n('say.hi', 'hah')}>{i18n('say.hi', i18n('cong'))}</div>
-        <div title={i18n('hi') + ',' + i18n('say.hi', i18n('tpl.name', i18n('cong')))}>{'Change my title attribute (The nested and concat case)'}</div>
+        <div title={i18n('hi') + ',' + i18n('say.hi', i18n('tpl.name', i18n('cong')))}>
+          {'Change my title attribute (The nested and concat case)'}
+        </div>
       </div>
     )
   }
 }
 
 ReactDOM.render(
-  <ReactI18nLiveProvider>
+  <I18nProvider tinyI18n={tinyI18n}>
     <View />
-  </ReactI18nLiveProvider>,
+  </I18nProvider>,
   window.root
 )

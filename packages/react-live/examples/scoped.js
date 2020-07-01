@@ -2,17 +2,17 @@
 import '../src/style.less'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
+import { withTinyI18n, I18nProvider } from '@rcp/use.i18ncontext'
 
 import { createReactI18nLive } from '../src'
 
 import { createIsolateI18n } from 'tiny-i18n'
 
-const { tinyI18n, transaction, withTinyI18n, ReactI18nLiveProvider, createElement, configure } = createReactI18nLive(createIsolateI18n())
+const { tinyI18n, transaction, createElement, configure } = createReactI18nLive(createIsolateI18n())
 configure({
   enabled: true
 })
 const { setDictionary, getLanguages, getCurrentLanguage, i18n, getDictionary } = tinyI18n
-
 
 let zhDict = require('./dict/zh-CN')
 let enDict = require('./dict/en-US')
@@ -80,8 +80,8 @@ class View extends React.Component {
 }
 
 ReactDOM.render(
-  <ReactI18nLiveProvider>
+  <I18nProvider tinyI18n={tinyI18n}>
     <View />
-  </ReactI18nLiveProvider>,
+  </I18nProvider>,
   window.root
 )

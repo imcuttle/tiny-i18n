@@ -5,6 +5,7 @@
  * @description
  */
 import live from './index'
+import defaultTinyI18n from './defaultTinyI18n'
 const { createElement, tinyI18n, configure } = live
 
 let cached = {}
@@ -15,12 +16,12 @@ export function use() {
   configure({
     enabled: true
   })
-  cached.i18n = require('tiny-i18n').i18n
-  cached.setLanguage = require('tiny-i18n').setLanguage
+  cached.i18n = defaultTinyI18n.i18n
+  cached.setLanguage = defaultTinyI18n.setLanguage
   cached.createElement = require('react').createElement
 
-  require('tiny-i18n').i18n = tinyI18n.i18n
-  require('tiny-i18n').setLanguage = tinyI18n.setLanguage
+  defaultTinyI18n.i18n = tinyI18n.i18n
+  defaultTinyI18n.setLanguage = tinyI18n.setLanguage
   require('react').createElement = createElement
 }
 
@@ -30,10 +31,10 @@ export function unuse() {
   })
 
   if (cached.i18n) {
-    require('tiny-i18n').i18n = cached.i18n
+    defaultTinyI18n.i18n = cached.i18n
   }
   if (cached.setLanguage) {
-    require('tiny-i18n').setLanguage = cached.setLanguage
+    defaultTinyI18n.setLanguage = cached.setLanguage
   }
   if (cached.createElement) {
     require('react').createElement = cached.createElement

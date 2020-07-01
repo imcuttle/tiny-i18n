@@ -27,7 +27,7 @@ const defaultSetting = {
   enabled: false
 }
 
-export default function createReactI18nLiveCore({
+export default function createReactI18nLive({
   tinyI18n = defaultTinyI18n,
   transaction,
   createElement = React.createElement

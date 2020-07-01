@@ -6,7 +6,7 @@
  */
 import getLocalLanguage from 'isomorphic-language'
 
-function createIsolateI18n() {
+export function createIsolateI18n() {
   const database = {}
   let currLanguage = (getLocalLanguage() || '').toLowerCase()
 

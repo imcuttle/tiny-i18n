@@ -5,25 +5,11 @@
  * @description
  */
 
-import createReactI18nLiveCore from './createReactI18nLiveCore'
-import createProviderContext from './createProviderContext'
+import createReactI18nLive from './createReactI18nLive'
 import Transaction from './Transaction'
 import defaultTinyI18n from './defaultTinyI18n'
 
-function createReactI18nLive(tinyI18n = { ...defaultTinyI18n }, { transaction, createElement } = {}) {
-  const core = createReactI18nLiveCore({
-    tinyI18n,
-    transaction,
-    createElement
-  })
-
-  return {
-    ...core,
-    ...createProviderContext(core.tinyI18n)
-  }
-}
-
-export { Transaction, createProviderContext, createReactI18nLiveCore, createReactI18nLive }
+export { Transaction, createReactI18nLive, defaultTinyI18n }
 
 const reactI18nLive = createReactI18nLive()
 
