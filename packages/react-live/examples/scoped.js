@@ -8,7 +8,7 @@ import { createReactI18nLive } from '../src'
 
 import { createIsolateI18n } from 'tiny-i18n'
 
-const { tinyI18n, transaction, createElement, configure } = createReactI18nLive(createIsolateI18n())
+const { tinyI18n, transaction, createElement, configure } = createReactI18nLive({tinyI18n: createIsolateI18n()})
 configure({
   enabled: true
 })

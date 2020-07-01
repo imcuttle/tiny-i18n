@@ -15,7 +15,7 @@
   "main": "index.es5.js",
   "scripts": {
     "test": "jest",
-    "prepare": "babel index.js -o index.es5.js"
+    "prepare": "npx babel index.js -o index.es5.js"
   },
   "keywords": [
     "react",

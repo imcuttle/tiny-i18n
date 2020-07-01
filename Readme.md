@@ -18,3 +18,10 @@
 - [tiny-i18n](packages/tiny-i18n) - Tiny yet useful i18n library.
 - [@tiny-i18n/react-live](packages/react-live) - The magical effect making tiny-i18n could be used easily and edit live in react.
 - [@tiny-i18n/express-live](packages/express-live) - The express router about tiny-i18n's edit live.
+- [@tiny-i18n/fs](packages/fs) - The utilities about some actions dealing with i18n files.
+
+## Related
+
+- [@rcp/use.i18n](https://github.com/imcuttle/rcp/tree/master/packages/use.i18n) - A react hook for using i18n
+- [@rcp/use.i18ncontext](https://github.com/imcuttle/rcp/tree/master/packages/use.i18ncontext) - A react hook for using i18n provider/consumer
+- [@rcp/hoc.i18n](https://github.com/imcuttle/rcp/tree/master/packages/hoc.i18n) - React Component's high order component about internationalization

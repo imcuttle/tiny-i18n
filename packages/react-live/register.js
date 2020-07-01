@@ -5,4 +5,4 @@
  * @description
  */
 
-module.exports = require('./lib/register')
+module.exports = require('./es/register')
