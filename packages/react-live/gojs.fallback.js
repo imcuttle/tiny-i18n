@@ -7,5 +7,6 @@
 
 module.exports = {
   '/i18n/update': 'http://localhost:9999/i18n/update',
-  '/i18n/languages': 'http://localhost:9999/i18n/languages'
+  '/i18n/languages': 'http://localhost:9999/i18n/languages',
+  '/i18n/word': 'http://localhost:9999/i18n/word'
 }

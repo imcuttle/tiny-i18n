@@ -168,7 +168,7 @@ export default class ModalContent extends React.Component {
                 <div className={bodyPrefix + 'key'}>Arguments: [{argsList[index].join(', ')}]</div>
               )}
             {/*Avoides highlight (arguments) because of overwriting React.createElement */}
-            {<div className={bodyPrefix + 'raw'}>Arguments: [{rawList[index]}]</div>}
+            {<div className={bodyPrefix + 'raw'}>{rawList[index]}</div>}
           </div>
           <Sep />
           <textarea

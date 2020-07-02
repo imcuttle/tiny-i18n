@@ -10,14 +10,13 @@ import { BadgeInner } from './Badge'
 import { highlightActiveBadge, unHighlightActiveBadge, updateDOM } from './dom-utils'
 import { open } from './Modal/index'
 import ModalContent from './Modal/ModalContent'
-import { getMaxLevel, rStrip, proxy, getOffset, createSingleElementView, strip } from './utils'
-import { stripWrappedString, wrapString } from './string-utils'
+import { rStrip, proxy, getOffset, createSingleElementView, strip } from './utils'
+import { wrapString } from './string-utils'
+import createI18nWrapper, { RAW_DATA_SEP } from './createI18nWrapper'
 import { encode, decode } from './ghost-string'
 import Transaction from './Transaction'
 
 import defaultTinyI18n from './defaultTinyI18n'
-
-const RAW_DATA_SEP = '\u200f'
 
 const badge = createSingleElementView()
 proxy(badge, 'open', function(open) {
@@ -81,8 +80,9 @@ export function createWrappedI18n(i18n, { setting = defaultSetting } = {}) {
       return i18n.apply(this, argumentArray)
     }
     const rawTranslated = i18n.apply(this, argumentArray)
-    const hideDataString = JSON.stringify(argumentArray).slice(1, -1)
-    return wrapString(rawTranslated + RAW_DATA_SEP + encode(hideDataString))
+    const hideDataString = JSON.stringify([key, args])
+    return wrapString(rawTranslated + RAW_DATA_SEP + encode(hideDataString), {
+    })
   }
 }
 
@@ -90,10 +90,18 @@ function makeWrappedCreateElement(
   createElement,
   { transaction, setting = defaultSetting, tinyI18n, highlight = false } = {}
 ) {
+  const I18nWrapper = createI18nWrapper({ badge, highlight, transaction, createElement, tinyI18n })
   return function wrappedCreateElement(type, config, ...children) {
     if (!setting.enabled) {
       return createElement.apply(this, [type, config].concat(children))
     }
+
+    // html tag
+    if (typeof type === 'string') {
+      return I18nWrapper({ children: createElement.apply(this, [type, config].concat(children)) })
+    }
+
+    return createElement.apply(this, [type, config].concat(children))
 
     const keyListContainer = []
     const pathMapContainer = {}
@@ -212,8 +220,6 @@ function makeWrappedCreateElement(
         return function onMouseEnter({ target }) {
           badge.close()
           const ctx = {}
-          console.log('createElement', createElement)
-          console.log('tinyI18n', tinyI18n)
           const content = (
             <ModalContent
               createElement={createElement}

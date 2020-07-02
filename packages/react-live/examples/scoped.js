@@ -20,7 +20,18 @@ let enDict = require('./dict/en-US')
 transaction.setConfig({
   fetchWord(data) {
     console.log('fetchWord', data)
-    return false
+    return fetch(`/i18n/word` , {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+      .then(res => res.json())
+      .then(json => {
+        return json.data
+      })
+    // word
   },
   fetchUpdate({ lang, key, value }) {
     return fetch('/i18n/update', {

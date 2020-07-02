@@ -1,10 +1,7 @@
-import escapeRegExp from 'escape-string-regexp'
 import yalList from 'yallist'
 
-const OPEN_STR = '\u206e'
-const CLOSE_STR = '\u206f'
-
-
+export const OPEN_STR = '\u206e'
+export const CLOSE_STR = '\u206f'
 
 export function wrapString(string, { openStr = OPEN_STR, closeStr = CLOSE_STR } = {}) {
   if (typeof string === 'string') {
@@ -145,10 +142,10 @@ export function stripWrappedString(
         string += content
       } else {
         // close
-        if (typeof transform === 'function') {
-          string = transform(string, { level })
-        }
         string = stripWrappedString(string, { level: level + 1, transform, openStr, closeStr })
+        if (typeof transform === 'function') {
+          string = transform(string, { level, openStr, closeStr })
+        }
         return {
           endNode: head.next,
           string: prefix + string
@@ -185,4 +182,48 @@ export function stripWrappedString(
   }
 
   return stripByLinkedNodeAll(linked.head)
+}
+
+export function mergeWrappedStringLinked(
+  wrappedString,
+  { transform, allowEmptyContent, openStr = OPEN_STR, closeStr = CLOSE_STR } = {}
+) {
+  const linked = parseWrappedStringLinkedList(wrappedString, {
+    openStr,
+    closeStr,
+    allowEmptyContent
+  })
+
+  let openStack = []
+  let head = linked.head
+  while (head) {
+    const { type } = head.value
+    if (type === 'open') {
+      openStack.push(head)
+    } else if (type === 'close') {
+      const openNode = openStack.pop()
+      const newHead = head.next
+      linked.removeNode(openNode)
+      linked.removeNode(head)
+      head = newHead
+
+      if (head.prev) {
+        // console.log(head.prev.value)
+        const content = transform ? transform(head.prev.value.content) : head.prev.value.content;
+        // if (content === '') {
+          // linked.removeNode(head.prev)
+        // }
+        // else {
+          head.prev.value.type = 'chunk-text';
+          head.prev.value.content = content;
+        // }
+      }
+      continue
+    } else {
+    }
+
+    head = head.next
+  }
+
+  return linked
 }

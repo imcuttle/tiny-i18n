@@ -1,5 +1,5 @@
 const { encode, decode } = require('../src/ghost-string')
-const { wrapString, parseWrappedStringLinkedList, stripWrappedString } = require('../src/string-utils')
+const { wrapString, mergeWrappedStringLinked, parseWrappedStringLinkedList, stripWrappedString } = require('../src/string-utils')
 
 describe('react-live string', function() {
   it('should encode&decode', function() {
@@ -97,6 +97,45 @@ describe('react-live string', function() {
       })
     ).toBe('normal string')
   })
+
+  it('should mergeWrappedStringLinked nested and concat with hidden data', function() {
+    const opts = {
+    }
+    const sep = '\u200f'
+    const wrappedChunk = wrapString(
+      `hi world ${wrapString('cuttle' + sep + encode('hide cuttle'), opts)}${sep}${encode('hide hi world')}`,
+      opts
+    )
+    const wrapped = 'haha ' + wrappedChunk + wrappedChunk + ' haha'
+
+    const dataList = []
+    console.log(mergeWrappedStringLinked(wrapped, {
+      ...opts,
+      transform: chunk => {
+        const pos = chunk.split('').lastIndexOf(sep)
+        if (pos >= 0) {
+          dataList.push(decode(chunk.slice(pos + 1)))
+          return chunk.slice(0, pos)
+        }
+        return chunk
+      }
+    }).toArray())
+    // expect(
+    //   mergeWrappedStringLinked(wrapped, {
+    //     ...opts,
+    //     transform: chunk => {
+    //       const pos = chunk.split('').lastIndexOf(sep)
+    //       if (pos >= 0) {
+    //         dataList.push(decode(chunk.slice(pos + 1)))
+    //         return chunk.slice(0, pos)
+    //       }
+    //       return chunk
+    //     }
+    //   }).toArray()
+    // ).toMatchSnapshot()
+    expect(dataList).toEqual(['hide cuttle', 'hide hi world', 'hide cuttle', 'hide hi world'])
+  })
+
 
   it('should parseWrappedStringLinkedList', function() {
     let linked = parseWrappedStringLinkedList(`xx(((A)B)C((CD()`, {

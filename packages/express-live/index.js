@@ -18,9 +18,9 @@ function makeRouter(i18nRoot, options) {
   }
 
   function wrap(fn) {
-    return function(req, res) {
+    return async function(req, res) {
       try {
-        fn.apply(this, arguments)
+        await fn.apply(this, arguments)
       } catch (e) {
         res.json(json(502, String(e)))
       }
@@ -32,20 +32,28 @@ function makeRouter(i18nRoot, options) {
     res.json(json(200, fs.update(key, value, lang)))
   }
 
-  r.post('/update', bodyParser.json(), bodyParser.urlencoded({ extended: true }), wrap(updateMiddleware))
+  r.use(bodyParser.json(), bodyParser.urlencoded({ extended: true }))
+    .post('/update', wrap(updateMiddleware))
+    .get(
+      '/word',
+      wrap((req, res) => {
+        const { key, lang } = req.query
+        res.json(json(200, fs.getWordSync(key, lang)))
+      })
+    )
+    .post(
+      '/word',
+      wrap((req, res) => {
+        const { key, lang } = req.body
+        res.json(json(200, fs.getWordSync(key, lang)))
+      })
+    )
     .get(
       '/languages',
       wrap((req, res) => {
         fs.getLanguages()
           .then(list => res.json(json(200, list)))
           .catch(err => res.json(json(500, err)))
-      })
-    )
-    .get(
-      '/word',
-      wrap((req, res) => {
-        const { key, lang } = req.query
-        res.json(json(200, fs.getWordSync(key, lang)))
       })
     )
 

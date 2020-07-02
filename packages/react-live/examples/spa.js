@@ -22,7 +22,18 @@ let enDict = require('./dict/en-US')
 transaction.setConfig({
   fetchWord(data) {
     console.log('fetchWord', data)
-    return false
+    return fetch(`/i18n/word` , {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+      .then(res => res.json())
+      .then(json => {
+        return json.data
+      })
+    // word
   },
   fetchUpdate({ lang, key, value }) {
     return fetch('/i18n/update', {
@@ -52,6 +63,9 @@ class View extends React.Component {
   }
   componentWillMount() {
     this.changeLanguage(getLanguages()[0])
+  }
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    document.title = '哈哈' + i18n('cong')
   }
 
   render() {

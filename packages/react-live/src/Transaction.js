@@ -41,7 +41,7 @@ class Transaction extends EventEmitter {
         delete req.id
         const data = await this.config.fetchWord(req)
         if (data === false) {
-          return null
+          return this.tinyI18n.getWord(extra.id, this.context.lang)
         }
         this.emit('langInfo', data)
         return data.toString()
@@ -49,17 +49,20 @@ class Transaction extends EventEmitter {
         err.id = 'langInfo'
         this.emit('error', err)
       }
-      return null
+      return this.tinyI18n.getWord(extra.id, this.context.lang)
     }
     return this.tinyI18n.getWord(extra.id, this.context.lang)
   }
 
   async update({ id, value, lang = this.context.lang }) {
     const req = { key: id, value, lang }
+    this.emit('update', req)
     if (this.config.fetchUpdate) {
       try {
         const data = await this.config.fetchUpdate(req)
-        this.emit('update', data)
+        if (data === false) {
+          return data
+        }
       } catch (err) {
         err.id = 'update'
         this.emit('error', err)

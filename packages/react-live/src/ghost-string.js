@@ -39,7 +39,7 @@ export function decode(encoded, { sepChar = SEP_CHAR, table = TABLE } = {}) {
       if (bitCode >= 0) {
         code += bitCode * unit
       } else {
-        code += char.codePointAt(0) * Math.pow(table.length, bit)
+        code += char.codePointAt(0) * unit
       }
       unit /= table.length
     }

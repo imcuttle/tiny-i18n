@@ -5,14 +5,17 @@
  * @description
  */
 import '../src/register'
-import { setDictionary, getLanguages, getCurrentLanguage, i18n, getDictionary } from 'tiny-i18n'
+import tinyI18n from 'tiny-i18n'
 import reactI18nLive from '../src/index'
+import { I18nProvider, withTinyI18n } from '@rcp/use.i18ncontext'
+
+const { setDictionary, getLanguages, getCurrentLanguage, i18n, getDictionary } = tinyI18n
 
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import '../src/style.less'
 
-const { transaction, withTinyI18n, ReactI18nLiveProvider } = reactI18nLive
+const { transaction } = reactI18nLive
 
 const KEY = 'i18n_'
 let zhDict
@@ -39,6 +42,14 @@ if (localStorage[KEY + 'en-US']) {
 }
 
 transaction
+  .on('update', ({ lang, key, value }) => {
+    // tinyI18n.extendDictionary(
+    //   {
+    //     [key]: value
+    //   },
+    //   lang
+    // )
+  })
   .on('afterUpdate', ({ lang }) => {
     const dict = getDictionary(lang)
     if (lang === 'en-US') {
@@ -93,8 +104,8 @@ class View extends React.Component {
 }
 
 ReactDOM.render(
-  <ReactI18nLiveProvider>
+  <I18nProvider tinyI18n={tinyI18n}>
     <View />
-  </ReactI18nLiveProvider>,
+  </I18nProvider>,
   window.root
 )
