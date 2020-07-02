@@ -5,9 +5,9 @@
  * @description
  */
 module.exports = {
-  hi: '你好嘻嘻嘻撒打收缩',
+  hi: '好的',
   cong: '聪s',
   'tpl.name': '${1}同学',
-  'say.hi': '你好呀, ${1} wdwdwwww说说 wwwss',
+  'say.hi': '你好, ${1}',
   'hhshshs': '啦啦啦啦啦'
 };

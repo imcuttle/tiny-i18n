@@ -88,6 +88,35 @@ describe('react-live string', function() {
     expect(dataList).toEqual(['hide cuttle', 'hide hi world', 'hide cuttle', 'hide hi world'])
   })
 
+  it('should wrapString & stripWrappedString concat with hidden data', function() {
+    const opts = {
+      openStr: '(',
+      closeStr: ')'
+    }
+    const sep = '\u200f'
+    const wrappedChunk = wrapString(
+      `hi world ${wrapString('cuttle' + sep + encode('hide cuttle'), opts)}${sep}${encode('hide hi world')}`,
+      opts
+    )
+    const wrapped = 'haha ' + wrappedChunk + wrappedChunk + ' haha'
+
+    const dataList = []
+    expect(
+      stripWrappedString(wrapped, {
+        ...opts,
+        transform: (chunk, {closeStr, openStr}) => {
+          const pos = chunk.split('').lastIndexOf(sep)
+          if (pos >= 0) {
+            dataList.push(decode(chunk.slice(pos + 1)))
+            return openStr + chunk.slice(0, pos) + closeStr
+          }
+          return openStr + chunk + closeStr
+        }
+      })
+    ).toBe('haha (hi world (cuttle))(hi world (cuttle)) haha')
+    expect(dataList).toEqual(['hide cuttle', 'hide hi world', 'hide cuttle', 'hide hi world'])
+  })
+
   it('should wrapString & stripWrappedString', function() {
     const opts = {
     }

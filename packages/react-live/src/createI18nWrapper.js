@@ -1,9 +1,8 @@
 import * as React from 'react'
 import { decode } from './ghost-string'
-import {CLOSE_STR, OPEN_STR, parseWrappedStringLinkedList, stripWrappedString} from './string-utils'
+import { CLOSE_STR, OPEN_STR, parseWrappedStringLinkedList, stripWrappedString } from './string-utils'
 import ModalContent from './Modal/ModalContent'
-import escapeReg from 'escape-string-regexp'
-import { highlightActiveBadge, unHighlightActiveBadge, updateDOM } from './dom-utils'
+import { highlightActiveBadge, unHighlightActiveBadge, updateDOM, updateDOMAttr } from './dom-utils'
 import { getOffset } from './utils'
 import { open } from './Modal'
 import cn from './classnames'
@@ -32,14 +31,11 @@ export function parseTranslatedString(encodedValue, { strip = true, data = true 
     transform: (chunk, { openStr, closeStr }) => {
       const pos = chunk.split('').lastIndexOf(RAW_DATA_SEP)
       if (pos >= 0) {
-        data && dataList.push(decode(chunk.slice(pos + 1)))
-        if (strip) {
-          return chunk.slice(0, pos)
-        }
-        return `${closeStr}${chunk.slice(0, pos)}${openStr}`
+        data && dataList.push(JSON.parse(decode(chunk.slice(pos + 1))))
+        return chunk.slice(0, pos)
       }
       return chunk
-    },
+    }
   })
 
   return {
@@ -48,54 +44,63 @@ export function parseTranslatedString(encodedValue, { strip = true, data = true 
   }
 }
 
-function useForceUpdate() {
-  const [v, set] = React.useState(0)
-  const update = React.useCallback(() => {
-    set(v => v + 1)
-  }, [])
+export function translatedStringI18n(encodedValue, tinyI18n) {
+  const dataList = []
 
-  return [v, update]
+  const rawContent = stripWrappedString(encodedValue, {
+    transform: (chunk, { openStr, closeStr }) => {
+      const pos = chunk.split('').lastIndexOf(RAW_DATA_SEP)
+      if (pos >= 0) {
+        const [key, argv] = JSON.parse(decode(chunk.slice(pos + 1)))
+        dataList.push([key, argv])
+        return tinyI18n.i18n(key, ...argv)
+      }
+      return chunk
+    }
+  })
+  return {
+    rawContent,
+    dataList
+  }
 }
 
-export default function createI18nWrapper({ badge, createElement, transaction, tinyI18n, highlight } = {}) {
-
+export default function createI18nWrapper({
+  badge,
+  createElement,
+  transaction,
+  originTinyI18n,
+  tinyI18n,
+  highlight
+} = {}) {
   return function I18nWrapper({ children }) {
     let newProps
     const uniqDataMap = new Map()
     const i18nWhereMap = new Map()
     const handleTranslatedString = (value, where) => {
-      const { dataList, rawContent } = parseTranslatedString(value, { strip: false })
+      const { dataList, rawContent } = translatedStringI18n(value, originTinyI18n)
 
-      const chunksLinked = parseWrappedStringLinkedList(rawContent, {
-        closeStr: OPEN_STR,
-        openStr: CLOSE_STR,
-      })
+      where &&
+        dataList.forEach((dataValue, i) => {
+          try {
+            const [key, data] = dataValue
 
-      let chunks = []
-      chunksLinked.toArray().forEach(item => {
+            if (key) {
+              const array = !i18nWhereMap.get(key) ? [] : i18nWhereMap.get(key)
+              array.push([where, value])
 
-      })
-
-      dataList.forEach((value, i) => {
-        try {
-          const [key, data] = JSON.parse(value)
-
-          if (key) {
-            const array = !i18nWhereMap.get(key) ? [] : i18nWhereMap.get(key)
-            array.push([where, [
-
-            ]])
-
-            i18nWhereMap.set(key, array)
-            uniqDataMap.set(key, data)
-          }
-        } catch (e) {}
-      })
+              i18nWhereMap.set(key, array)
+              uniqDataMap.set(key, data)
+            }
+          } catch (e) {}
+        })
       return rawContent
     }
 
     const config = { ...children.props }
     delete config.children
+    // hmr update loop
+    //
+    delete config['data-i18n-react-live']
     const names = Object.keys(config)
     names.forEach(configKey => {
       const node = config[configKey]
@@ -130,12 +135,33 @@ export default function createI18nWrapper({ badge, createElement, transaction, t
           badge.close()
           const ctx = {}
 
-          const argsGetterList = keys.map(key => lang => uniqDataMap.get(key))
+          const argsGetter = (key, lang) =>
+            uniqDataMap.get(key).map(argVal => {
+              let cLang
+              if (lang) {
+                cLang = originTinyI18n.getCurrentLanguage()
+                originTinyI18n.setLanguage(lang)
+              }
+              const result = translatedStringI18n(argVal, originTinyI18n).rawContent
+              if (cLang) {
+                originTinyI18n.setLanguage(cLang)
+              }
+              return result
+            })
+          const argsGetterList = keys.map(key => lang => argsGetter(key, lang))
+          const translate = (key, lang) => {
+            const cLang = originTinyI18n.getCurrentLanguage()
+            originTinyI18n.setLanguage(lang)
+            const args = argsGetter(key)
+            const string = originTinyI18n.i18n(key, ...args)
+            originTinyI18n.setLanguage(cLang)
+            return string
+          }
           const content = (
             <ModalContent
               createElement={createElement}
               transaction={transaction}
-              tinyI18n={tinyI18n}
+              tinyI18n={originTinyI18n}
               onClose={unHighlightActiveBadge}
               onActiveUpdate={(newId, oldId) => {
                 unHighlightActiveBadge()
@@ -144,12 +170,7 @@ export default function createI18nWrapper({ badge, createElement, transaction, t
               ref={ref => (ctx.content = ref)}
               keyList={keys}
               translatedGetterList={keys.map(key => lang => {
-                const cLang = tinyI18n.getCurrentLanguage()
-                tinyI18n.setLanguage(lang)
-                const args = uniqDataMap.get(key)
-                const string = parseTranslatedString(tinyI18n.i18n(key, ...args), { data: false }).rawContent
-                tinyI18n.setLanguage(cLang)
-                return string
+                return translate(key, lang)
               })}
               argsGetterList={argsGetterList}
               inputValueList={keys.map(key => tinyI18n.getWord(key))}
@@ -168,17 +189,16 @@ export default function createI18nWrapper({ badge, createElement, transaction, t
 
                   const { index } = ctx.content.state
                   if (ctx.content.lang === tinyI18n.getCurrentLanguage()) {
-                    updateDOM(
-                      target,
-                      data.data.id,
-                      data.data.raw,
-                      parseTranslatedString(
-                        tinyI18n.i18n.apply(null, [data.data.id].concat(argsGetterList[index](ctx.content.lang))),
-                        {
-                          data: false
-                        }
-                      ).rawContent
+                    const encodedValue = tinyI18n.i18n.apply(
+                      null,
+                      [data.data.id].concat(argsGetterList[index](ctx.content.lang))
                     )
+                    updateDOMAttr(target, data.data.id, {
+                      encodedValue,
+                      stripedValue: parseTranslatedString(encodedValue, {
+                        data: false
+                      }).rawContent
+                    })
                   }
 
                   ctx.content.forceUpdate()
@@ -188,8 +208,6 @@ export default function createI18nWrapper({ badge, createElement, transaction, t
             />
           )
           const dom = badge.open({
-            transaction,
-            tinyI18n: tinyI18n,
             onClick() {
               open({ children: content })
             }
@@ -208,4 +226,12 @@ export default function createI18nWrapper({ badge, createElement, transaction, t
 
     return React.cloneElement(children, newProps)
   }
+}
+
+
+if (module.hot) {
+  //
+  module.hot.accept([], () => {
+    // 不加这个就卡死，HMR
+  })
 }

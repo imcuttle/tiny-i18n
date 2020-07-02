@@ -3,9 +3,23 @@ const MIN_NUM_CODE = '0'.charCodeAt(0)
 const MAX_NUM_CODE = '0'.charCodeAt(0) + CODE_GAP
 const MIN_LETTER_CODE = 'a'.charCodeAt(0)
 
-const TABLE = ['\u200c', '\u200b', '\u2060', '\u2062', '\u2063']
+const TABLE = [
+  '\u200c',
+  '\u200b',
+  '\u200d',
+  '\u2060',
+  '\u2061',
+  '\u2062',
+  '\u2063',
+  '\u2064',
+  '\u2065',
+  '\u2066',
+  '\u2067',
+  '\u2068',
+  '\u2069'
+]
 // const TABLE = ['1', '2', '3', '4', '5']
-const SEP_CHAR = '\u2064'
+const SEP_CHAR = '\u200e'
 // const SEP_CHAR = '*'
 
 export const charEncode = (ch, table) => {

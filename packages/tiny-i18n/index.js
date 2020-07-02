@@ -73,6 +73,7 @@ export function createIsolateI18n() {
     i18n,
     setDictionary,
     setLanguage,
+    getDataBase: () => database,
     getCurrentLanguage,
     getDictionary,
     getLanguages,

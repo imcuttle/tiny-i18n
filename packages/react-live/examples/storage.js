@@ -11,6 +11,8 @@ import { I18nProvider, withTinyI18n } from '@rcp/use.i18ncontext'
 
 const { setDictionary, getLanguages, getCurrentLanguage, i18n, getDictionary } = tinyI18n
 
+tinyI18n.setLanguage('zh-cn')
+
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import '../src/style.less'
@@ -96,8 +98,7 @@ class View extends React.Component {
         </div>
 
         <div>{i18n('hhshshs')}</div>
-        {/*TODO BUG*/
-        /*<div title={i18n('hi') + ',' + i18n('say.hi', i18n('tpl.name', i18n('cong')))}>{'Change my title attribute (The nested and concat case)'}</div>*/}
+        {<div title={i18n('hi') + ',' + i18n('say.hi', i18n('tpl.name', i18n('cong')))}>{'Change my title attribute (The nested and concat case)'}</div>}
       </div>
     )
   }

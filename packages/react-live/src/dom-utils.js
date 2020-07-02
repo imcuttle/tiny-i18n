@@ -1,14 +1,17 @@
+import { stripWrappedString } from './string-utils'
+
 /**
  * @file: dom-utils
  * @author: Cuttle Cong
  * @date: 2017/12/20
  * @description:
  */
-const debug = require('debug')('@tiny-i18n/react-live')
-import { rStrip, strip, toWrappedString } from './utils'
+import { decode } from './ghost-string'
+import { parseTranslatedString, RAW_DATA_SEP } from './createI18nWrapper'
+
 
 export function getDOMListFromID(id) {
-  return [].slice.call(document.querySelectorAll(`*[data-i18n-keylist*=${JSON.stringify(JSON.stringify(id))}]`))
+  return [].slice.call(document.querySelectorAll(`*[data-i18n-react-live*=${JSON.stringify(JSON.stringify(id))}]`))
 }
 
 export function highlightActiveBadge(id) {
@@ -19,46 +22,39 @@ export function highlightActiveBadge(id) {
 }
 
 export function unHighlightActiveBadge() {
-  const list = [].slice.call(document.querySelectorAll('*[data-i18n-keylist].i18n-active'))
+  const list = [].slice.call(document.querySelectorAll('*[data-i18n-react-live].i18n-active'))
   list.forEach(ele => {
     ele.classList.remove('i18n-active')
   })
 }
 
-export function updateDOM(el, id, oldRaw, newRaw) {
-  const list = getDOMListFromID(id)
-  debug('updateDOM list: %o', list)
+function replace(encodedValue, key, newValue) {
+  const stringData = stripWrappedString(encodedValue, {
+    transform: (chunk, { openStr, closeStr }) => {
+      const pos = chunk.split('').lastIndexOf(RAW_DATA_SEP)
+      if (pos >= 0) {
+        const [keyName, argvs] = JSON.parse(decode(chunk.slice(pos + 1)))
+        if (keyName === key) {
+          return newValue.encodedValue
+        }
 
-  function replace(content, maxLev) {
-    if (maxLev < 1) {
-      return content
+        return `${openStr}${chunk}${closeStr}`
+      }
+      return `${openStr}${chunk}${closeStr}`
     }
+  })
 
-    let striped = strip(
-      content,
-      (str, level, _) => {
-        // console.log(str, maxLev)
-        debug('strip str chunk', str)
-        // level = level || 1
-        if (str === oldRaw) {
-          return toWrappedString(newRaw, void 0, maxLev)
-        }
-
-        if (maxLev > 1) {
-          return toWrappedString(replace(str, maxLev - 1), void 0, maxLev)
-        }
-
-        return _
-      },
-      maxLev
-    )
-
-    // i18n('a') + i18n('tpl', i18n('a'))
-    return replace(striped, maxLev - 1)
+  return {
+    encodedValue: stringData,
+    stripedValue: parseTranslatedString(stringData, { data: false }).rawContent
   }
+}
+
+export function updateDOMAttr(el, id, newVal) {
+  const list = getDOMListFromID(id)
 
   list.forEach(ele => {
-    let pathmap = ele.getAttribute('data-i18n-pathmap') || '{}'
+    let pathmap = ele.getAttribute('data-i18n-react-live') || '{}'
     try {
       pathmap = JSON.parse(pathmap)
     } catch (e) {
@@ -67,16 +63,24 @@ export function updateDOM(el, id, oldRaw, newRaw) {
 
     const paths = pathmap[id]
     if (paths) {
-      paths.forEach(([p, maxLev]) => {
-        if (/^children\[(\d+)]$/.test(p)) {
+      const newPaths = paths.map(([path, stringWithData]) => {
+        if (/^children\[(\d+)]$/.test(path)) {
           const index = parseInt(RegExp.$1)
           const node = ele.childNodes[index]
 
-          node.textContent = replace(node.textContent, maxLev)
+          const { encodedValue, stripedValue } = replace(stringWithData, id, newVal)
+          node.textContent = stripedValue
+          return [path, encodedValue]
         } else {
-          ele.setAttribute(p, replace(ele.getAttribute(p), maxLev))
+          const { encodedValue, stripedValue } = replace(stringWithData, id, newVal)
+          ele.setAttribute(path, stripedValue)
+          return [path, encodedValue]
         }
       })
+
+      pathmap[id] = newPaths
+
+      ele.setAttribute('data-i18n-react-live', JSON.stringify(pathmap))
     }
   })
 }

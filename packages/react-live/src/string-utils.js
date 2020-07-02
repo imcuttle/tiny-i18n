@@ -208,7 +208,6 @@ export function mergeWrappedStringLinked(
       head = newHead
 
       if (head.prev) {
-        // console.log(head.prev.value)
         const content = transform ? transform(head.prev.value.content) : head.prev.value.content;
         // if (content === '') {
           // linked.removeNode(head.prev)
