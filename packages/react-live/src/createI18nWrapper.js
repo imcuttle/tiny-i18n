@@ -76,7 +76,6 @@ export default function createI18nWrapper({ badge, createElement, transaction, t
 
       })
 
-      console.log(dataList)
       dataList.forEach((value, i) => {
         try {
           const [key, data] = JSON.parse(value)
