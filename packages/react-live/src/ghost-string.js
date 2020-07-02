@@ -3,10 +3,10 @@ const MIN_NUM_CODE = '0'.charCodeAt(0)
 const MAX_NUM_CODE = '0'.charCodeAt(0) + CODE_GAP
 const MIN_LETTER_CODE = 'a'.charCodeAt(0)
 
-// const TABLE = ['\u200c', '\u200b', '\u2060', '\u2062', '\u2063']
-const TABLE = ['1', '2', '3', '4', '5']
-// const SEP_CHAR = '\u2064'
-const SEP_CHAR = '*'
+const TABLE = ['\u200c', '\u200b', '\u2060', '\u2062', '\u2063']
+// const TABLE = ['1', '2', '3', '4', '5']
+const SEP_CHAR = '\u2064'
+// const SEP_CHAR = '*'
 
 export const charEncode = (ch, table) => {
   const code = ch.charCodeAt(0)
@@ -26,7 +26,7 @@ export function encode(string, { sepChar = SEP_CHAR, table = TABLE } = {}) {
     }
     encodedArray.push(chunk)
   }
-  return sepChar + encodedArray.join(sepChar) + sepChar
+  return encodedArray.join(sepChar)
 }
 
 export function decode(encoded, { sepChar = SEP_CHAR, table = TABLE } = {}) {
@@ -48,14 +48,14 @@ export function decode(encoded, { sepChar = SEP_CHAR, table = TABLE } = {}) {
   return String.fromCodePoint(...points)
 }
 
-const s = 'hi\ud83d\udc0e\ud83d\udc71\u2764'
-
-for (const c of s) {
-  console.log(c.codePointAt(0))
-}
-
-console.log(encode(s))
-console.log(decode(encode(s)).length)
-console.log(decode(encode(s)))
-console.log(decode(encode(s) + encode(s)))
-console.log((s + s).length)
+// const s = 'hi\ud83d\udc0e\ud83d\udc71\u2764'
+//
+// for (const c of s) {
+//   console.log(c.codePointAt(0))
+// }
+//
+// console.log(encode(s))
+// console.log(decode(encode(s)).length)
+// console.log(decode(encode(s)))
+// console.log(decode(encode(s) + encode(s)))
+// console.log((s + s).length)

@@ -10,11 +10,14 @@ import { BadgeInner } from './Badge'
 import { highlightActiveBadge, unHighlightActiveBadge, updateDOM } from './dom-utils'
 import { open } from './Modal/index'
 import ModalContent from './Modal/ModalContent'
-import { getMaxLevel, rStrip, proxy, getOffset, toWrappedString, createSingleElementView, strip } from './utils'
+import { getMaxLevel, rStrip, proxy, getOffset, createSingleElementView, strip } from './utils'
+import { stripWrappedString, wrapString } from './string-utils'
+import { encode, decode } from './ghost-string'
 import Transaction from './Transaction'
 
 import defaultTinyI18n from './defaultTinyI18n'
 
+const RAW_DATA_SEP = '\u200f'
 
 const badge = createSingleElementView()
 proxy(badge, 'open', function(open) {
@@ -77,13 +80,9 @@ export function createWrappedI18n(i18n, { setting = defaultSetting } = {}) {
     if (!setting.enabled) {
       return i18n.apply(this, argumentArray)
     }
-
-    let maxLev = 0
-    argumentArray.forEach(arg => {
-      maxLev = Math.max(getMaxLevel(String(arg)), maxLev)
-    })
-
-    return toWrappedString(JSON.stringify(argumentArray), 1 + maxLev)
+    const rawTranslated = i18n.apply(this, argumentArray)
+    const hideDataString = JSON.stringify(argumentArray).slice(1, -1)
+    return wrapString(rawTranslated + RAW_DATA_SEP + encode(hideDataString))
   }
 }
 
