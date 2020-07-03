@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.1.2"></a>
+## [2.1.2](https://github.com/imcuttle/tiny-i18n/compare/@tiny-i18n/fs@2.1.1...@tiny-i18n/fs@2.1.2) (2020-07-03)
+
+
+
+
+**Note:** Version bump only for package @tiny-i18n/fs
+
 <a name="2.1.1"></a>
 ## [2.1.1](https://github.com/imcuttle/tiny-i18n/compare/@tiny-i18n/fs@2.1.0...@tiny-i18n/fs@2.1.1) (2020-07-03)
 
