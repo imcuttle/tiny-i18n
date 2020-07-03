@@ -11,7 +11,7 @@
     "release": "lerna publish --conventional-commits -m 'chore(release): publish'",
     "example": "lerna run --parallel example",
     "dev": "lerna run --parallel dev",
-    "prerelease": "npx jest test"
+    "prerelease": "npx jest"
   },
   "commitlint": {
     "extends": [

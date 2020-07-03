@@ -33,6 +33,6 @@ jobs:
 
     - stage: Test
       before_script: npm install codecov
-      script: npm test -- --coverage
+      script: npx jest --coverage
       after_script: codecov --token=$CODECOV_TOKEN
 
