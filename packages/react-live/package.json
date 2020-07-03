@@ -45,7 +45,12 @@
     "lib": "lib"
   },
   "files": [
-    "*"
+    "es",
+    "lib",
+    "src",
+    "index.d.ts",
+    "register.d.ts",
+    "register.js"
   ],
   "author": "imcuttle",
   "license": "MIT",
