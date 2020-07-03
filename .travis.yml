@@ -16,6 +16,7 @@ cache:
 
 install:
   - npm install
+  - npm install codecov
   - npm run bootstrap
 
 jobs:
@@ -24,15 +25,12 @@ jobs:
       allow_failure: true
       script: cd packages/react-live && npm run build
       deploy:
-#        edge:
-#          branch: v1.8.47
         provider: pages
         skip_cleanup: true
         github_token: ${GH_TOKEN} # Set in travis-ci.org dashboard
         local_dir: packages/react-live/.dist
 
     - stage: Test
-      before_script: npm install codecov
       script: npx jest --coverage
       after_script: codecov --token=$CODECOV_TOKEN
 
