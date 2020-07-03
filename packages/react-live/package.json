@@ -7,7 +7,7 @@
     "example": "run-p -l server gojs",
     "server": "cd examples && node server.js",
     "gojs": "gojs -i examples/spa.js -p 10000",
-    "build": "gojs -b examples/storage.js",
+    "build": "gojs -b examples/index.js",
     "build:css": "lessc src/style.less lib/style.css",
     "build:es": "rm -rf es && npx babel --no-babelrc --presets=$PWD/esbabel-preset.js src/ -D -d es",
     "build:lib": "rm -rf lib && npx babel src/ -D -d lib",
