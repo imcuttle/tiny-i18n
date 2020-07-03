@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.0.6"></a>
+## [2.0.6](https://github.com/imcuttle/tiny-i18n/compare/@tiny-i18n/react-live@2.0.5...@tiny-i18n/react-live@2.0.6) (2020-07-03)
+
+
+### Bug Fixes
+
+* parseTranslatedString ([0862434](https://github.com/imcuttle/tiny-i18n/commit/0862434))
+
+
+
+
 <a name="2.0.5"></a>
 ## [2.0.5](https://github.com/imcuttle/tiny-i18n/compare/@tiny-i18n/react-live@2.0.4...@tiny-i18n/react-live@2.0.5) (2020-07-03)
 
