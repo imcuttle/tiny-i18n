@@ -4,7 +4,6 @@
   "description": "tiny i18n",
   "main": "lib/tiny-i18n/index.js",
   "scripts": {
-    "test": "jest",
     "changelog": "conventional-changelog --lerna-package -p angular -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md",
     "commitmsg": "commitlint -e $GIT_PARAMS",
     "precommit": "lint-staged",
@@ -12,7 +11,7 @@
     "release": "lerna publish --conventional-commits -m 'chore(release): publish'",
     "example": "lerna run --parallel example",
     "dev": "lerna run --parallel dev",
-    "prerelease": "npm test"
+    "prerelease": "npx jest test"
   },
   "commitlint": {
     "extends": [
