@@ -20,4 +20,5 @@ export interface TinyI18n {
 
 export const createIsolateI18n: () => TinyI18n
 
-export default TinyI18n
+declare const tinyI18n: TinyI18n
+export default tinyI18n
