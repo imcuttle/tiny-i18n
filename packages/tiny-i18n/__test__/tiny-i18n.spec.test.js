@@ -5,7 +5,9 @@
  * @description
  */
 
-import {
+import tinyI18n from '../index'
+
+const {
   i18n,
   getDictionary,
   extendDictionary,
@@ -13,7 +15,7 @@ import {
   setDictionary,
   setLanguage,
   createIsolateI18n
-} from '../index'
+} = tinyI18n
 
 
 describe('tiny-i18n.spec', function () {
