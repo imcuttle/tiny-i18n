@@ -98,7 +98,8 @@ i18n('confirm', ',Cuttle' /_ replaced by `${1}` _/) === 'OK ,Cuttle'
 NOTE: It's useful for create the internal independent i18n environment
 
 ```javascript
-import { createIsolateI18n, setDictionary, i18n } from 'tiny-i18n'
+import tinyI18n from 'tiny-i18n'
+const {createIsolateI18n, setDictionary, i18n} = tinyI18n
 setDictionary({
   cancel: 'Cancel',
   confirm: 'OK ${1}'
@@ -113,7 +114,8 @@ i.i18n('cancel') // throws error
 ## Examples
 
 ```javascript
-const { setDictionary, getDictionary, i18n, setLanguage } = require('tiny-i18n')
+const tinyI18n = require('tiny-i18n')
+const { setDictionary, getDictionary, i18n, setLanguage } = tinyI18n
 
 setDictionary(
   {

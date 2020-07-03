@@ -61,15 +61,3 @@ export function decode(encoded, { sepChar = SEP_CHAR, table = TABLE } = {}) {
   }
   return String.fromCodePoint(...points)
 }
-
-// const s = 'hi\ud83d\udc0e\ud83d\udc71\u2764'
-//
-// for (const c of s) {
-//   console.log(c.codePointAt(0))
-// }
-//
-// console.log(encode(s))
-// console.log(decode(encode(s)).length)
-// console.log(decode(encode(s)))
-// console.log(decode(encode(s) + encode(s)))
-// console.log((s + s).length)

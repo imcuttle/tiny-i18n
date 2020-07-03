@@ -7,6 +7,7 @@
     "use-force-update": "^1.0.7"
   },
   "files": [
+    "index.d.ts",
     "index.js",
     "index.es5.js"
   ],

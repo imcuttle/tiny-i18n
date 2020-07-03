@@ -35,11 +35,9 @@
   },
   "peerDependencies": {
     "react": "*",
-    "tiny-i18n": "^1.0.2"
+    "tiny-i18n": "^2.0.0"
   },
   "dependencies": {
-    "debug": "^3.1.0",
-    "escape-string-regexp": "^4.0.0",
     "yallist": "^4.0.0"
   },
   "directories": {

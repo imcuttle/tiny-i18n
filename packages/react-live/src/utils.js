@@ -6,7 +6,6 @@
  */
 import ReactDOM from 'react-dom'
 import React from 'react'
-const debug = require('debug')('@tiny-i18n/react-live')
 
 exports.styleUsable = function(style) {
   const sty = document.createElement('style')
@@ -159,8 +158,6 @@ export function strip(string = '', stripFn = (data, l, _) => _, repeatCount = 1)
     const restString = allString.slice(lastIndex + _.length)
     const openCount = countString(_, OPEN_CHAR)
     const closeCount = countString(_, CLOSE_CHAR)
-    debug('openCount', openCount, _)
-    debug('closeCount', closeCount, matched)
 
     if (openCount !== closeCount) {
       let n = openCount - closeCount
@@ -176,9 +173,7 @@ export function strip(string = '', stripFn = (data, l, _) => _, repeatCount = 1)
     }
 
     try {
-      debug('matched', matched)
       const rlt = stripFn(matched, level, _, lastIndex)
-      debug('return string %s.', rlt)
       return rlt
     } catch (e) {
       return _

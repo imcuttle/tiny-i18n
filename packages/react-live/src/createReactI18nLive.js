@@ -7,9 +7,6 @@
 
 import * as React from 'react'
 import { BadgeInner } from './Badge'
-import { highlightActiveBadge, unHighlightActiveBadge, updateDOM } from './dom-utils'
-import { open } from './Modal/index'
-import ModalContent from './Modal/ModalContent'
 import { rStrip, proxy, getOffset, createSingleElementView, strip } from './utils'
 import { wrapString } from './string-utils'
 import createI18nWrapper, { RAW_DATA_SEP } from './createI18nWrapper'

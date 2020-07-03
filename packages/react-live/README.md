@@ -5,14 +5,7 @@
 
 The magical effect making tiny-i18n could be used easily and edit live in react.
 
-[A demo](https://imcuttle.github.io/tiny-i18n/) and [video](http://obu9je6ng.bkt.clouddn.com/Jietu20180622-102135-HD.mp4) created by react and using edit-live. 
-
-## Examples
-
-```bash
-# The Demo in `examples/` which could edit i18n word in live.
-npm run example
-```
+[A demo](https://imcuttle.github.io/tiny-i18n/) and [video](http://obu9je6ng.bkt.clouddn.com/Jietu20180622-102135-HD.mp4) created by react and using edit-live.
 
 ## Usage
 
@@ -21,39 +14,43 @@ npm install @tiny-i18n/react-live tiny-i18n
 ```
 
 - entry.js (the frontend's start point)
+
 ```javascript
-if (process.env.NODE_ENV !== 'production' && localStorage['i18n-edit-live']) {
-  require('@tiny-i18n/react-live/register')
-  // Load style
-  require('@tiny-i18n/react-live/lib/style.css')
-}
+import * as React from 'react'
+import * as ReactDOM from 'react-dom'
+import '@tiny-i18n/react-live/lib/style.css'
+import { withTinyI18n, I18nProvider } from '@rcp/use.i18ncontext'
 
-// NOTE: Do not use `import` syntax here
-// Because `import` would be moved to top level.
-// But `@tiny-i18n/react-live/register` should be required firstly.
-const { Provider, inject } = require('@tiny-i18n/react-live')
+import { createReactI18nLive } from '@tiny-i18n/react-live'
 
-const { setDictionary } = require('tiny-i18n')
+import { createIsolateI18n } from 'tiny-i18n'
 
-setDictionary({
-  // ...
-}, 'zh-CN')
+const { tinyI18n, transaction, createElement, configure } = createReactI18nLive({tinyI18n: createIsolateI18n()})
 
-setDictionary({
-  // ...
-}, 'en-US')
+configure({
+  enabled: true
+})
+
+const { setDictionary, getLanguages, getCurrentLanguage, i18n, getDictionary } = tinyI18n
+
+let zhDict = require('./dict/zh-CN')
+let enDict = require('./dict/en-US')
 
 transaction.setConfig({
-  // The fetch method should returns the translated word of key in lang environment.
-  // It's useful in the follows case:
-  //   We have en and zh dictionaries, and the matched dictionary would be loaded instead of loading both dictionaries.
-  fetchWord({ lang, key }) {
-    // Returns false for skipping
-    //  And will fallback to i18n(key)
-    return false
+  fetchWord(data) {
+    return fetch(`/i18n/word` , {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+      .then(res => res.json())
+      .then(json => {
+        return json.data
+      })
+    // word
   },
-  // The fetch method should do something about updating raw word in matched dict file.
-  // Be triggered when click `Save` button.
   fetchUpdate({ lang, key, value }) {
     return fetch('/i18n/update', {
       method: 'POST',
@@ -61,22 +58,30 @@ transaction.setConfig({
         'content-type': 'application/json'
       },
       body: JSON.stringify({ lang, key, value })
-    }).then(res => res.json())
+    })
+      .then(res => res.json())
+      .then(json => {
+        console.log(json)
+      })
   }
 })
+transaction.on('error', e => {
+  console.error('error', e)
+})
 
-transaction
-  .on('error', e => {
-    console.error('error', e)
-  })
+setDictionary(zhDict, 'zh-CN')
 
-@inject
+setDictionary(enDict, 'en-US')
+
+@withTinyI18n
 class View extends React.Component {
   changeLanguage = lang => {
-    // Injects context.i18n
-    // And each function of context.i18n would forceUpdate children component
-    this.context.i18n.setLanguage(lang)
+    this.props.tinyI18n.setLanguage(lang)
   }
+  componentWillMount() {
+    this.changeLanguage(getLanguages()[0])
+  }
+
   render() {
     return (
       <div>
@@ -96,14 +101,24 @@ class View extends React.Component {
         <div title={i18n('hi') + ',' + i18n('tpl.name', i18n('cong'))}>
           {'Hover me! [translated words in title attribute] (The nested and concat case)'}
         </div>
+        {/*TODO BUG*/
+        /*<div title={i18n('hi') + ',' + i18n('say.hi', i18n('tpl.name', i18n('cong')))}>{'Change my title attribute (The nested and concat case)'}</div>*/}
       </div>
     )
   }
 }
 
 ReactDOM.render(
-  <Provider>
-    <View/>
-  </Provider>
+  <I18nProvider tinyI18n={tinyI18n}>
+    <View />
+  </I18nProvider>,
+  window.root
 )
+```
+
+## Examples
+
+```bash
+# The Demo in `examples/` which could edit i18n word in live.
+npm run example
 ```

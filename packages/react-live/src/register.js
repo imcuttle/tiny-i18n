@@ -10,21 +10,6 @@ const { createElement, tinyI18n: overrideTinyI18n, configure } = live
 
 let cached = {}
 
-export function use(tinyI18n = defaultTinyI18n) {
-  unuse()
-
-  configure({
-    enabled: true
-  })
-  cached.i18n = tinyI18n.i18n
-  cached.setLanguage = tinyI18n.setLanguage
-  cached.createElement = require('react').createElement
-
-  tinyI18n.i18n = overrideTinyI18n.i18n
-  tinyI18n.setLanguage = overrideTinyI18n.setLanguage
-  require('react').createElement = createElement
-}
-
 export function unuse() {
   configure({
     enabled: false
@@ -41,6 +26,21 @@ export function unuse() {
   }
 
   cached = {}
+}
+
+export function use(tinyI18n = defaultTinyI18n) {
+  unuse()
+
+  configure({
+    enabled: true
+  })
+  cached.i18n = tinyI18n.i18n
+  cached.setLanguage = tinyI18n.setLanguage
+  cached.createElement = require('react').createElement
+
+  tinyI18n.i18n = overrideTinyI18n.i18n
+  tinyI18n.setLanguage = overrideTinyI18n.setLanguage
+  require('react').createElement = createElement
 }
 
 use()
