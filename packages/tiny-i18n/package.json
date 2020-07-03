@@ -2,9 +2,7 @@
   "name": "tiny-i18n",
   "version": "2.0.1",
   "dependencies": {
-    "isomorphic-language": "^0.0.0",
-    "react-live": "^2.2.2",
-    "use-force-update": "^1.0.7"
+    "isomorphic-language": "^0.0.0"
   },
   "files": [
     "index.d.ts",
