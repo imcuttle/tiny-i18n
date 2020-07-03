@@ -51,7 +51,9 @@ export function translatedStringI18n(encodedValue, tinyI18n) {
     transform: (chunk, { openStr, closeStr }) => {
       const pos = chunk.split('').lastIndexOf(RAW_DATA_SEP)
       if (pos >= 0) {
-        const [key, argv] = JSON.parse(decode(chunk.slice(pos + 1)))
+        let [key, argv] = JSON.parse(decode(chunk.slice(pos + 1)))
+        // www
+        argv = argv.map(x => parseTranslatedString(x).rawContent)
         dataList.push([key, argv])
         return tinyI18n.i18n(key, ...argv)
       }
@@ -229,9 +231,3 @@ export default function createI18nWrapper({
 }
 
 
-if (module.hot) {
-  //
-  module.hot.accept([], () => {
-    // 不加这个就卡死，HMR
-  })
-}

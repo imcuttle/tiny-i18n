@@ -1,15 +1,15 @@
-/**
- * @file index
- * @author Cuttle Cong
- * @date 2018/6/19
- * @description
- */
-import '../src/register'
-import tinyI18n from 'tiny-i18n'
-import reactI18nLive from '../src/index'
+/** @jsx createElement */
+import {createIsolateI18n} from 'tiny-i18n'
+import {createReactI18nLive} from '../src/index'
 import { I18nProvider, withTinyI18n } from '@rcp/use.i18ncontext'
+import '../src/style.less'
 
+const { tinyI18n, transaction, createElement, configure } = createReactI18nLive({tinyI18n: createIsolateI18n()})
 const { setDictionary, getLanguages, getCurrentLanguage, i18n, getDictionary } = tinyI18n
+
+configure({
+  enabled: true
+})
 
 tinyI18n.setLanguage('zh-cn')
 
@@ -17,7 +17,6 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import '../src/style.less'
 
-const { transaction } = reactI18nLive
 
 const KEY = 'i18n_'
 let zhDict

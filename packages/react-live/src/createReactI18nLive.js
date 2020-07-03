@@ -22,6 +22,13 @@ proxy(badge, 'open', function(open) {
   }
 })
 
+if (module.hot) {
+  //
+  module.hot.accept(['.', './createI18nWrapper'], () => {
+    badge.close()
+  })
+}
+
 const defaultSetting = {
   enabled: false
 }
