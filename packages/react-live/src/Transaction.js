@@ -44,7 +44,7 @@ class Transaction extends EventEmitter {
           return this.tinyI18n.getWord(extra.id, this.context.lang)
         }
         this.emit('langInfo', data)
-        return data.toString()
+        return String(data)
       } catch (err) {
         err.id = 'langInfo'
         this.emit('error', err)

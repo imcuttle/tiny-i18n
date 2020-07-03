@@ -162,11 +162,9 @@ export default class ModalContent extends React.Component {
               <span>Key: </span>
               <span>{idList[index]}</span>
             </div>
-            {argsList[index] &&
-              !!argsList[index].length && (
-                /*Avoides highlight (arguments) because of overwriting React.createElement */
-                <div className={bodyPrefix + 'key'}>Arguments: [{argsList[index].join(', ')}]</div>
-              )}
+            <div className={bodyPrefix + 'key'}>
+              {!!argsList[index].length ? `Arguments: [${argsList[index].join(', ')}]` : ''}
+            </div>
             {/*Avoides highlight (arguments) because of overwriting React.createElement */}
             {<div className={bodyPrefix + 'raw'}>{rawList[index]}</div>}
           </div>

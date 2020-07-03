@@ -1,4 +1,5 @@
-*[data-i18n-react-live], .__i18n-translated {
+*[data-i18n-react-live],
+.__i18n-translated {
   transition: box-shadow ease 0.4s;
   outline: 1px #ff3d3d dotted !important;
   outline-offset: -1px;
@@ -39,15 +40,19 @@
   color: #999;
   margin: 0;
   text-align: right;
-  padding: 10px 0;
+  padding-top: 4px;
+  padding-bottom: 10px;
 }
 .i18n-modal-body-key {
   text-align: right;
-  font-size: 12px;
+  font-size: 13px;
   padding-top: 0;
+  padding-bottom: 0;
   max-width: 100%;
   overflow: auto;
-  padding-bottom: 4px;
+  //padding-bottom: 5px;
+  line-height: 24px;
+  height: 24px;
 }
 .i18n-modal-body-key > div {
   display: inline-block;
@@ -131,6 +136,7 @@
   color: #999;
 }
 .i18n-modal-header {
+  cursor: move;
   font-size: 15px;
 }
 .i18n-modal-footer::after {
@@ -163,9 +169,15 @@
 }
 
 .i18n-modal-container {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans',
+    'Droid Sans', 'Helvetica Neue', sans-serif;
+
   textarea {
     font-size: 14px;
   }
+}
+.i18n-modal-body-raw {
+  font-size: 16px;
 }
 .i18n-modal-sep {
   margin-left: -20px;
@@ -174,7 +186,7 @@
   background-color: #d2d2d2;
 }
 .i18n-modal-body {
-  padding: 15px 20px 20px;
+  padding: 10px 20px 20px;
 }
 .i18n-modal-footer {
   border-top: 1px solid #f0f0f0;
