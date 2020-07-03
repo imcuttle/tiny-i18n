@@ -42,9 +42,9 @@
   },
   "directories": {
     "example": "examples",
-    "lib": "lib",
-    "es": "es"
+    "lib": "lib"
   },
+  "files": ["*"],
   "author": "imcuttle",
   "license": "MIT",
   "repository": {
