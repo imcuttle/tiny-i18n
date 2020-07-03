@@ -1,6 +1,6 @@
 {
   "name": "tiny-i18n",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "dependencies": {
     "isomorphic-language": "^0.0.0"
   },
