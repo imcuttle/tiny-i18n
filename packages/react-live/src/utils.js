@@ -7,7 +7,7 @@
 import ReactDOM from 'react-dom'
 import React from 'react'
 
-exports.styleUsable = function(style) {
+export const styleUsable = function(style) {
   const sty = document.createElement('style')
   const head = document.head || document.getElementsByTagName('head')[0]
   sty.type = 'text/css'
@@ -23,7 +23,7 @@ exports.styleUsable = function(style) {
   }
 }
 
-function createSingleElementView() {
+export function createSingleElementView() {
   let container = null
   const getContainer = (mountDOM = document.body, attributes) => {
     if (!container) {
@@ -48,9 +48,8 @@ function createSingleElementView() {
   }
 }
 
-exports.createSingleElementView = createSingleElementView
 
-exports.getOffset = function(el) {
+export const getOffset = function(el) {
   el = el.getBoundingClientRect()
   return {
     left: el.left + global.scrollX,
@@ -58,7 +57,7 @@ exports.getOffset = function(el) {
   }
 }
 
-exports.singleView = function(attributes, mountDOM) {
+export const singleView = function(attributes, mountDOM) {
   const center = createSingleElementView()
 
   function getCoreFunc(attributes, mountDOM) {
@@ -99,7 +98,7 @@ exports.singleView = function(attributes, mountDOM) {
   return getCoreFunc(attributes, mountDOM)
 }
 
-exports.isElementOf = Component => {
+export const isElementOf = Component => {
   // Trying to solve the problem with 'children: XXX.isRequired'
   // (https://github.com/gaearon/react-hot-loader/issues/710). This does not work for me :(
   const originalPropTypes = Component.propTypes
@@ -114,7 +113,7 @@ exports.isElementOf = Component => {
   return element => element && element.type === elementType
 }
 
-exports.proxy = (ref, name, callback) => {
+export const proxy = (ref, name, callback) => {
   if (ref) {
     if (callback) {
       ref[name] = callback.call(ref, ref[name])

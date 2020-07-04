@@ -70,39 +70,6 @@ export const Footer = ({ children }) => (
   <div className={prefix + 'footer'}>{children}</div>
 )
 
-Object.assign(module.exports, emitter, {
-  open(props, attributes, mountDOM) {
-    // element, attributes, mountDOM = document.body
-    let dom = emitter.open(
-      <Modal onClose={emitter.close} {...props} visible={true} />,
-      { ...attributes, className: prefix + 'wrap' },
-      mountDOM
-    )
-
-    document.body.removeEventListener('mousemove', emitter.moveHandle)
-    document.body.removeEventListener('mousedown', emitter.downHandle)
-
-    document.body.removeEventListener('touchstart', emitter.downHandle)
-    document.body.removeEventListener('touchmove', emitter.moveHandle)
-
-    emitter.moveHandle = moveHandle.bind(dom)
-    emitter.downHandle = downHandle.bind(dom)
-    document.body.addEventListener('mousemove', emitter.moveHandle)
-    document.body.addEventListener('mousedown', emitter.downHandle)
-    document.body.addEventListener('touchstart', emitter.downHandle)
-    document.body.addEventListener('touchmove', emitter.moveHandle)
-    return dom
-  },
-  close() {
-    document.body.removeEventListener('mousemove', emitter.moveHandle)
-    document.body.removeEventListener('mousedown', emitter.downHandle)
-
-    document.body.removeEventListener('touchstart', emitter.downHandle)
-    document.body.removeEventListener('touchmove', emitter.moveHandle)
-    return emitter.close.apply(this, arguments)
-  }
-})
-
 export default class Modal extends React.PureComponent {
   componentWillMount() {
     use()
@@ -153,3 +120,37 @@ Modal.Header = Header
 Modal.Body = Body
 Modal.Footer = Footer
 Modal.Sep = Sep
+
+Object.assign(Modal, emitter, {
+  open(props, attributes, mountDOM) {
+    // element, attributes, mountDOM = document.body
+    let dom = emitter.open(
+      <Modal onClose={emitter.close} {...props} visible={true} />,
+      { ...attributes, className: prefix + 'wrap' },
+      mountDOM
+    )
+
+    document.body.removeEventListener('mousemove', emitter.moveHandle)
+    document.body.removeEventListener('mousedown', emitter.downHandle)
+
+    document.body.removeEventListener('touchstart', emitter.downHandle)
+    document.body.removeEventListener('touchmove', emitter.moveHandle)
+
+    emitter.moveHandle = moveHandle.bind(dom)
+    emitter.downHandle = downHandle.bind(dom)
+    document.body.addEventListener('mousemove', emitter.moveHandle)
+    document.body.addEventListener('mousedown', emitter.downHandle)
+    document.body.addEventListener('touchstart', emitter.downHandle)
+    document.body.addEventListener('touchmove', emitter.moveHandle)
+    return dom
+  },
+  close() {
+    document.body.removeEventListener('mousemove', emitter.moveHandle)
+    document.body.removeEventListener('mousedown', emitter.downHandle)
+
+    document.body.removeEventListener('touchstart', emitter.downHandle)
+    document.body.removeEventListener('touchmove', emitter.moveHandle)
+    return emitter.close.apply(this, arguments)
+  }
+})
+
