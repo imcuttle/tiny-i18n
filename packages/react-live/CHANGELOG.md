@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.0.9"></a>
+## [2.0.9](https://github.com/imcuttle/tiny-i18n/compare/@tiny-i18n/react-live@2.0.8...@tiny-i18n/react-live@2.0.9) (2020-07-04)
+
+
+
+
+**Note:** Version bump only for package @tiny-i18n/react-live
+
 <a name="2.0.8"></a>
 ## [2.0.8](https://github.com/imcuttle/tiny-i18n/compare/@tiny-i18n/react-live@2.0.7...@tiny-i18n/react-live@2.0.8) (2020-07-04)
 

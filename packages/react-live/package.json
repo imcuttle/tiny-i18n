@@ -1,6 +1,6 @@
 {
   "name": "@tiny-i18n/react-live",
-  "version": "2.0.8",
+  "version": "2.0.9",
   "main": "lib/index.js",
   "module": "es/index.js",
   "scripts": {
@@ -24,7 +24,7 @@
   ],
   "devDependencies": {
     "@rcp/use.i18ncontext": "^1.0.1",
-    "@tiny-i18n/express-live": "^2.0.8",
+    "@tiny-i18n/express-live": "^2.0.9",
     "express": "^4.16.3",
     "go-js": "^1.3.12",
     "less": "^3.0.4",
