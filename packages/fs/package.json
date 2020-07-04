@@ -1,6 +1,6 @@
 {
   "name": "@tiny-i18n/fs",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "description": "The utilities about some actions dealing with i18n files.",
   "dependencies": {
     "babel-core": "^6.26.0",

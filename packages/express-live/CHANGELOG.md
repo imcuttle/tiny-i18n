@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="2.0.10"></a>
+## [2.0.10](https://github.com/imcuttle/tiny-i18n/compare/@tiny-i18n/express-live@2.0.9...@tiny-i18n/express-live@2.0.10) (2020-07-04)
+
+
+
+
+**Note:** Version bump only for package @tiny-i18n/express-live
+
 <a name="2.0.9"></a>
 ## [2.0.9](https://github.com/imcuttle/tiny-i18n/compare/@tiny-i18n/express-live@2.0.8...@tiny-i18n/express-live@2.0.9) (2020-07-04)
 
