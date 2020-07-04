@@ -4,10 +4,11 @@ import { CLOSE_STR, OPEN_STR, parseWrappedStringLinkedList, stripWrappedString }
 import ModalContent from './Modal/ModalContent'
 import { highlightActiveBadge, unHighlightActiveBadge, updateDOM, updateDOMAttr } from './dom-utils'
 import { getOffset } from './utils'
-import { open } from './Modal'
+import Modal from './Modal'
 import cn from './classnames'
 
 export const RAW_DATA_SEP = '\u200f'
+const {open} = Modal
 
 function proxyEvents(props, config = {}) {
   return Object.keys(config).reduce((map, name) => {
