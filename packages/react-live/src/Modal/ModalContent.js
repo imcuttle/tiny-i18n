@@ -7,7 +7,7 @@
  */
 import React from 'react'
 import PropTypes from 'prop-types'
-import { close, Header, Body, Footer, Sep } from './index'
+import Modal, { Header, Body, Footer, Sep } from './index'
 
 const bodyPrefix = 'i18n-modal-body-'
 export default class ModalContent extends React.Component {
@@ -126,7 +126,7 @@ export default class ModalContent extends React.Component {
 
   close = () => {
     this.props.onClose && this.props.onClose()
-    close()
+    Modal.close()
   }
 
   render() {

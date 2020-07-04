@@ -127,14 +127,14 @@ export default function createI18nWrapper({
       ...config,
       className: cn(config.className, '__i18n-translated'),
       'data-i18n-react-live': JSON.stringify(
-        [...i18nWhereMap.keys()].reduce((acc, n) => {
+        Array.from(i18nWhereMap.keys()).reduce((acc, n) => {
           acc[n] = i18nWhereMap.get(n)
           return acc
         }, {})
       ),
       ...proxyEvents(config, {
         onMouseEnter: function({ target }) {
-          const keys = [...uniqDataMap.keys()]
+          const keys = Array.from(uniqDataMap.keys())
           badge.close()
           const ctx = {}
 
