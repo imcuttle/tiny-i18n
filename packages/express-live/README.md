@@ -21,7 +21,7 @@ app.listen(9999, () => {
 })
 ```
 
-- dict/en-US.js
+- dict/common.js
 
 ```javascript
 module.exports = {
@@ -29,7 +29,7 @@ module.exports = {
 }
 ```
 
-- dict/zh-CN.js
+- dict/common.js
 
 ```javascript
 module.exports = {

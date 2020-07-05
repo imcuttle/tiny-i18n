@@ -6,15 +6,19 @@
  */
 const fs = require('fs')
 const babel = require('babel-core')
+const {promisify} = require('util')
 const t = require('babel-core').types
 
 const { single, double } = require('./quote')
 
-function overwrite(filename, id, value, map, options) {
-  const fileContent = fs.readFileSync(filename, { encoding: 'utf8' })
+const readFile = promisify(fs.readFile.bind(fs))
+const writeFile = promisify(fs.writeFile.bind(fs))
+
+async function overwrite(filename, id, value, map, options) {
+  const fileContent = await readFile(filename, { encoding: 'utf8' })
   const newFileContent = checkHasKeyAndReplaceBabel(id, value, fileContent, map, options)
   if (newFileContent !== fileContent) {
-    fs.writeFileSync(filename, newFileContent, { encoding: 'utf8' })
+    await writeFile(filename, newFileContent, { encoding: 'utf8' })
     return true
   }
   return false

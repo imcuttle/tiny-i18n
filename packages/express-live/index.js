@@ -27,9 +27,9 @@ function makeRouter(i18nRoot, options) {
     }
   }
 
-  function updateMiddleware(req, res) {
+  async function updateMiddleware(req, res) {
     const { key, lang, value } = req.body
-    res.json(json(200, fs.update(key, value, lang)))
+    res.json(json(200, await fs.update(key, value, lang)))
   }
 
   r.use(bodyParser.json(), bodyParser.urlencoded({ extended: true }))

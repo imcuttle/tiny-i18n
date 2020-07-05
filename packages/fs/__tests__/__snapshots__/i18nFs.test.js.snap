@@ -1,3 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`I18nFS should thrown error 1`] = `"[tiny-i18n fs] The language: zhxx-CN is not found."`;
+exports[`I18nFS should lang thrown error 1`] = `[Error: lang: ./../../zh-CN invalid]`;
+
+exports[`I18nFS should thrown error 1`] = `[Error: [tiny-i18n fs] The language: zhxx-CN is not found.]`;

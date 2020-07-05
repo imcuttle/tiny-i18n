@@ -4,14 +4,13 @@
  * @date 2018/6/21
  * @description
  */
-const index = require('fs')
+const fs = require('fs')
 const nps = require('path')
 const pify = require('pify')
 
 const rp = require('./replace')
 
 function requireNoCache(modulePath) {
-  const data = require(modulePath)
   modulePath = require.resolve(modulePath)
 
   if (require.cache[modulePath]) {
@@ -19,7 +18,8 @@ function requireNoCache(modulePath) {
     delete require.cache[modulePath]
     children.forEach(({ id }) => delete require.cache[id])
   }
-  return data
+
+  return require(modulePath)
 }
 
 class Fs {
@@ -29,7 +29,7 @@ class Fs {
   }
 
   getLanguages() {
-    return pify(index.readdir)(this.i18nRoot).then(files =>
+    return pify(fs.readdir.bind(fs))(this.i18nRoot).then(files =>
       files.map(filename => filename.replace(/\.[^.]+$/, '')).filter(filename => !filename.startsWith('.'))
     )
   }
@@ -44,8 +44,12 @@ class Fs {
   }
 
   _getFile(lang) {
+    const filename = nps.join(this.i18nRoot, lang)
+    if (!filename.startsWith(this.i18nRoot)) {
+      throw new Error(`lang: ${lang} invalid`)
+    }
     try {
-      return require.resolve(nps.join(this.i18nRoot, lang))
+      return require.resolve(filename)
     } catch (e) {
       if (e && e.code === 'MODULE_NOT_FOUND') {
         throw new Error('[tiny-i18n fs] The language: ' + lang + ' is not found.')
@@ -54,8 +58,8 @@ class Fs {
     }
   }
 
-  update(key, value, lang, options) {
-    return rp.overwrite(this._getFile(lang), key, value, this.getDictSync(lang), { ...this.options, options })
+  async update(key, value, lang, options) {
+    return await rp.overwrite(this._getFile(lang), key, value, this.getDictSync(lang), { ...this.options, options })
   }
 }
 module.exports = Fs

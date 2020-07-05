@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`express-live comple should main update 1`] = `
+Object {
+  "code": 200,
+  "data": true,
+}
+`;
+
+exports[`express-live comple should main update error2 1`] = `
+Object {
+  "code": 502,
+  "data": "Error: [tiny-i18n fs] The language: zh-cn/mainx is not found.",
+}
+`;

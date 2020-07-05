@@ -1,10 +1,3 @@
-/**
- * @file zh-CN.js
- * @author Cuttle Cong
- * @date 2018/6/21
- * @description
- */
-
 module.exports = {
   site_title: '虚拟股权',
   please_input_keyword_for_searching: '输入计划名称搜索',
@@ -77,10 +70,10 @@ module.exports = {
   have_been_not_vested_cancel: '取消未归属',
   have_been_canceled: '已取消',
   grant_status: '授予状态',
-  stock_price_at_present_cny: '当前股价（¥）',
-  exercise_price_per_share_cny_so: '行权价/股（¥）',
-  exercise_price_per_share_cny_rs: '认购价/股（¥）',
-  funded_investment_amount: '已出资金额（¥）',
+  stock_price_at_present_cny: '当前股价(¥)',
+  exercise_price_per_share_cny_so: '行权价/股(¥)',
+  exercise_price_per_share_cny_rs: '认购价/股(¥)',
+  funded_investment_amount: '已出资金额(¥)',
   period_of_investment: '出资期限',
   deduction_status: '扣减状态',
   employee_number: '员工编号',
@@ -107,7 +100,5 @@ module.exports = {
   update_success: '更新成功',
   update_fail: '更新失败',
   placeholder_input_grant_code_or_user_name: '请输入授予编号或员工姓名',
-  please_take_attention: '请注意',
-  export_fail: 'export_failvalue1593917428075',
-  'export_fail_xxx': 'export_failvalue1593917428075'
-};
+  export_fail: '导出失败'
+}

@@ -28,26 +28,42 @@ describe('I18nFS', function() {
     ).toBe('创建')
   })
 
-  it('should i18nFs.update', function () {
+  it('should i18nFs.update', async function () {
+    let value = 'export_failvalue' + Date.now()
     expect(
-      i18nFs.update('export_fail', 'export_failvalue' + Date.now(), 'zh-CN')
+      await i18nFs.update('export_fail', value, 'zh-CN')
     ).toBe(true)
 
     expect(
-      i18nFs.update('export_fail_xxx', 'export_xxxx' +  + Date.now(), 'zh-CN')
+      await i18nFs.update('export_fail_xxx', value, 'zh-CN')
     ).toBe(true)
   })
 
 
-  it('should i18nFs.update failed', function () {
+  it('should i18nFs.update failed', async function () {
     expect(
-      new I18nFs(makeFixture(''), { force: false, quote: 'double' })
+      await new I18nFs(makeFixture(''), { force: false, quote: 'double' })
         .update('xxxxxyyyy', 'asdad', 'zh-CN')
     ).toBeFalsy()
   })
 
-  it('should thrown error', function () {
-    expect(() => i18nFs.update('export_fail', 'export_failvalue', 'zhxx-CN'))
-      .toThrowErrorMatchingSnapshot()
+  it('should thrown error', async function () {
+    try {
+      const result = await i18nFs.update('export_fail', 'export_failvalue', 'zhxx-CN')
+      expect(result).toMatchSnapshot()
+    } catch (e) {
+      expect(e)
+        .toMatchSnapshot()
+    }
+  })
+
+  it('should lang thrown error', async function () {
+    try {
+      const result = await i18nFs.update('export_fail_xxx', 'error', './../../zh-CN')
+      expect(result).toMatchSnapshot()
+    } catch (e) {
+      expect(e)
+        .toMatchSnapshot()
+    }
   })
 })
