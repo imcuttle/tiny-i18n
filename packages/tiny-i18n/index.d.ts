@@ -10,7 +10,7 @@ export interface TinyI18n {
   i18n: (key: string, ...argv: any[]) => string
   setDictionary: (dict: Locale, language?: string) => void
   setLanguage: (language: string) => void
-  getDataBase: () => any
+  getDataBase: () => Dictionary
   getCurrentLanguage: () => string
   getDictionary: (language?: string) => Locale
   getLanguages: () => string[]

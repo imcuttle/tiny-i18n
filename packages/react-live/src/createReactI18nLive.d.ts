@@ -29,13 +29,11 @@ export type ReactI18nLive = {
   createElement: Extract<React, 'createElement'>
 }
 
-export default function createReactI18nLive(
-  opts?: ReactI18nLiveType
-): ReactI18nLive
+export default function createReactI18nLive(opts?: ReactI18nLiveType): ReactI18nLive
 
-export function createWrappedI18n(i18n: TinyI18n, opts?: { setting?: SettingType }): Extract<TinyI18n, 'i18n'>
+export function createWrappedI18n(i18n: TinyI18n['i18n'], opts?: { setting?: SettingType }): TinyI18n['i18n']
 
 export function createWrappedSetLanguage(
-  setLanguage: Extract<TinyI18n, 'setLanguage'>,
+  setLanguage: TinyI18n['setLanguage'],
   opts?: { setting?: SettingType; transaction?: Transaction }
-): Extract<TinyI18n, 'setLanguage'>
+): TinyI18n['setLanguage']
