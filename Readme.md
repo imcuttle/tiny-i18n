@@ -9,7 +9,7 @@
 
 [A demo](https://imcuttle.github.io/tiny-i18n/) and [video](http://obu9je6ng.bkt.clouddn.com/Jietu20180622-102135-HD.mp4) created by react and using edit-live.
 
-[![Edit kpow6rnnr](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/kpow6rnnr)
+<!-- [![Edit kpow6rnnr](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/kpow6rnnr) -->
 
 - [中文介绍](https://imcuttle.github.io/%E5%9C%A8%E7%BA%BF%E7%BC%96%E8%BE%91%E5%9B%BD%E9%99%85%E5%8C%96%E6%96%87%E6%9C%AC)
 - [方案说明](https://github.com/imcuttle/personal-blog/issues/17)
