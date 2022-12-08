@@ -7,7 +7,7 @@
   },
   "devDependencies": {
     "@tiny-i18n/react-live": "^2.0.11",
-    "express": "^4.16.3",
+    "express": "^4.17.3",
     "supertest": "^3.1.0"
   },
   "publishConfig": {
